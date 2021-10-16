@@ -1,0 +1,30 @@
+{
+  "name": "oubliette",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode development",
+    "buildMin": "node minify"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [
+    ""
+  ],
+  "author": "Daniel Puckowski",
+  "license": "ISC",
+  "homepage": "",
+  "devDependencies": {
+    "terser": "^4.8.0"
+  },
+  "dependencies": {
+    "fs-extra": "^9.1.0",
+    "rxjs": "^5.5.10",
+    "rxjs-compat": "^6.6.3",
+    "three-plain-animator": "^1.0.6"
+  }
+}

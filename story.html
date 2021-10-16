@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Oubliette</title>
+    <meta name="description" content="A dungeon crawling adventure game." />
+    <meta name="author" content="Daniel Puckowski" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" media="screen" href="assets/css/style.css" />
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+</head>
+
+<body style="overflow: hidden;" class="screen-background">
+    <script src="assets/js/three.min.js"></script>
+    <script src="assets/js/story-screen.js"></script>
+
+    <div style="padding:1rem;width:calc(100% - 2rem);height:65vh;overflow-y: auto;background: rgba(0,0,0,0.3);" id="storyDiv">
+        <div class="story-1" id="story1">
+            <p>
+                    The Free City of Tyhr, the surrounding towns, and the surrounding villages were recently propserous and peaceful. However, dark forces from the north 
+                    have crept in and have begun corrupting the land. Evil creatures, imbued with magic, sap the might from all those who seek to defend their homeland.
+            </p>
+        </div>
+
+        <div class="story-2" id="story2">
+            <p>
+                    Most, even the brave, are now in hiding in their homes. They pray that the evil creatures do not pass by in the night. Many flock to the cities which
+                    are overwhelmed. Demons, and even Lesser Dragons, block the path between settlements. But worse still, word of a Greater Dragon entering the lands
+                    around Tyhr has begun to spread, terrifying an already troubled populace.
+            </p>
+        </div>
+
+        <div class="story-3" id="story3">
+            <p>
+                    With the Greater Dragon comes a potent dark magic that causes the land to spoil. A brave hero is needed to slay the Greater Dragon that now calls 
+                    the Tyhrann Dungeon its home, before the lands are reduced to nothing but ghost cities and ghost towns.
+            </p>
+        </div>
+    </div>
+
+    <div>
+        <div class="button-menu-container">
+            <button id="buttonBegin" class="button-menu">BEGIN ADVENTURE</button>
+        </div>
+    </div>
+
+    <div>
+        <div class="icon-scroll-container">
+            <img src="assets/images/pad/down-arrow.png" style="width: 64px; height: 64px;opacity: 0;transition: opacity 4s;" id="scrollIcon">
+        </div>
+    </div>
+</body>
+
+</html>

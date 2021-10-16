@@ -1,0 +1,422 @@
+@font-face {
+	font-family: main-font;
+	src: url("../fonts/pressstart2p.ttf");
+}
+
+body {
+	margin: 0;
+	font-family: main-font;
+}
+
+#canvasContainer {
+	position: relative;
+}
+
+.div-control-item {
+	vertical-align: middle;
+    display: inline-block;
+	height: 9vh;
+	width: 9vh;
+}
+
+.div-control-item-background {
+	background-color: rgba(255, 255, 255, 0.4);
+}
+
+.div-control-item-narrow {
+	width: 12.5vw !important;
+}
+
+.div-control {
+	flex-basis: 12.5%; 
+	display: flex; 
+	justify-content: center;
+	user-select: none;
+}
+
+.div-control-container-bottom {
+	position: fixed;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    display: flex; background-image: url("../images/textures/stone_2.jpg");
+	background-repeat: repeat-x;
+	border: 3px outset rgba(202,202,202,0.29);
+}
+
+.div-control-container-top {
+	position: fixed;
+    bottom: calc(9vh + 6px);
+    left: 3px;
+    width: 100%;
+    display: flex;
+}
+
+.div-statusbar-container {
+	position: fixed; 
+	top: 0px; 
+	left: 0px;
+	width: 100%;
+	padding: 0.5rem;
+	display: flex; background-image: url("../images/textures/stone_2.jpg");
+	background-repeat: repeat-x;
+	z-index: 100;
+	justify-content: center;
+	border: 3px outset rgba(202,202,202,1);
+}
+
+.div-statusbar-text {
+	font-size: 1.2rem;
+	color: #cacaca;
+	margin-top: auto;
+	margin-bottom: auto;
+	user-select: none;
+}
+
+.div-dialog-container {
+	position: absolute;
+	top:0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+
+	background-image: url("../images/textures/stone_2.jpg");
+	background-repeat: repeat;
+	z-index: 300;
+	padding: 1rem;
+	border: 3px outset rgba(202,202,202,0.29);
+	overflow: auto;
+}
+
+.div-dialog-buttons {
+	padding-top: 1rem;
+}
+
+.div-dialog-buttons button {
+	font-family: main-font;
+	background-image: url("../images/textures/stone_3.gif");
+	background-repeat: repeat;
+	color: #cacaca;
+	border: 3px outset rgba(202,202,202,0.29);
+}
+
+.div-dialog-text {
+	font-size: 1.1rem;
+	color: #cacaca;
+}
+
+.div-inventory-container {
+	position: absolute;
+	top:0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+
+	background-image: url("../images/textures/stone_2.jpg");
+	background-repeat: repeat;
+	z-index: 200;
+	padding: 1rem;
+	border: 3px outset rgba(202,202,202,0.29);
+	overflow: auto;
+}
+
+.div-inventory-buttons {
+	
+}
+
+.div-inventory-buttons button {
+	font-family: main-font;
+	background-image: url("../images/textures/stone_3.gif");
+	background-repeat: repeat;
+	color: #cacaca;
+	border: 3px outset rgba(202,202,202,0.29);
+}
+
+.div-attack-splat-container {
+	z-index: 200;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+	align-items: center;
+	pointer-events: none;
+}
+
+.div-splat {
+	position: relative;
+    text-align: center;
+    color: white;
+}
+
+.div-splat-damage {
+	position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.img-splat {
+	max-height: 30vw;
+}
+
+.div-loot-container {
+	position: absolute;
+	top:0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+
+	background-image: url("../images/textures/stone_2.jpg");
+	background-repeat: repeat;
+	z-index: 100;
+	padding: 1rem;
+	border: 3px outset rgba(202,202,202,0.29);
+	overflow: auto;
+}
+
+.div-loot-buttons {
+	
+}
+
+.div-loot-buttons button {
+	font-family: main-font;
+	background-image: url("../images/textures/stone_3.gif");
+	background-repeat: repeat;
+	color: #cacaca;
+	border: 3px outset rgba(202,202,202,0.29);
+}
+
+#inventory * {
+	padding-right: 0.5rem;
+	padding-bottom: 0.5rem;
+}
+
+#loot * {
+	padding-right: 0.5rem;
+	padding-bottom: 0.5rem;
+}
+
+.button-credits {
+	font-family: main-font;
+	background-image: url("../images/textures/stone_3.gif");
+	background-repeat: repeat;
+	color: #cacaca;
+	border: 3px outset rgba(202,202,202,0.29);
+
+	position: fixed;
+    bottom: 50px;
+	left: 50px;
+	z-index: 100;
+}
+
+.button-continue {
+	font-family: main-font;
+	background-image: url("../images/textures/stone_3.gif");
+	background-repeat: repeat;
+	color: #cacaca;
+	border: 3px outset rgba(202,202,202,0.29);
+
+	position: fixed;
+    bottom: 50px;
+	left: 180px;
+	z-index: 100;
+}
+
+.div-credits {
+	position: fixed;
+    top: 0;
+    left: 0;
+    background: black;
+    color: white;
+    width: 100%;
+	height: 100%;
+	padding: 1rem;
+}
+
+.div-credits-text {
+	overflow: auto;
+	height: 50%;
+}
+
+.div-welcome-container {
+	position: absolute;
+	top:50%;
+	bottom: 0;
+	left: 50%;
+	right: 0;
+
+	background-image: url("../images/textures/stone_2.jpg");
+	background-repeat: repeat;
+	z-index: 300;
+	padding: 1rem;
+	border: 3px outset rgba(202,202,202,0.29);
+	display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.div-welcome-text {
+	font-size: 2.2rem;
+	color: #cacaca;
+}
+
+.div-welcome-buttons {
+	padding-top: 1rem;
+	position: absolute;
+    bottom: 10px;
+}
+
+.div-welcome-buttons button {
+	font-family: main-font;
+	background-image: url("../images/textures/stone_3.gif");
+	background-repeat: repeat;
+	color: #cacaca;
+	border: 3px outset rgba(202,202,202,0.29);
+}
+
+.tooltip-ex {
+	position: relative;
+	display: inline-block;
+}
+   
+.tooltip-control {
+}
+
+.tooltip-ex-top {
+    margin-left: -126px;
+    margin-top: -50px;
+}
+ 
+.tooltip-control-top {
+	margin-top: -50px;
+	margin-left: 180px;
+}
+
+.tooltip-control-top-end {
+	margin-top: -50px;
+	margin-left: -180px;
+}
+
+.tooltip-ex-text {
+	visibility: hidden;
+	position: fixed;
+	width: 180px;
+	background-color: #555;
+	color: #fff;
+	text-align: center;
+	padding: 5px 0px;
+	border-radius: 6px;
+	z-index: 200;
+	opacity: 0;
+	transition: opacity .6s;
+	overflow-wrap: break-word;
+}
+   
+.tooltip-ex:hover .tooltip-ex-text {
+	visibility: visible;
+	opacity: 1;
+}
+
+.tooltip-control:hover .tooltip-ex-text {
+	visibility: visible;
+	opacity: 1;
+}
+
+.screen-background {
+	background-image: url("../images/textures/stone_5.jpg");
+	background-repeat: repeat;
+}
+
+.menu {
+	padding: 1rem;
+}
+
+.menu button {
+	font-family: main-font;
+	background-image: url("../images/textures/stone_3.gif");
+	background-repeat: repeat;
+	color: #cacaca;
+	border: 3px outset rgba(202,202,202,0.29);
+}
+
+.menu-options {
+	color: white;
+	text-align: center;
+}
+
+.button-menu-container {
+	position: fixed;
+    bottom: 50px;
+	left: 50px;
+	z-index: 100;
+}
+
+.button-menu {
+	font-family: main-font;
+	background-image: url("../images/textures/stone_3.gif");
+	background-repeat: repeat;
+	color: #cacaca;
+	border: 3px outset rgba(202,202,202,0.29);
+}
+
+.body-play {
+	background-color: #000000;
+}
+
+.loading-notice-container {
+	z-index: 1000;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+	align-items: center;
+	pointer-events: none;
+	color: white;
+	font-size: 2rem;
+}
+
+.div-changelog {
+	width: calc(100vw - 2rem);
+	height: calc(100vh - 2rem);
+	padding: 1rem;
+}
+
+.div-changelog-text {
+	overflow: auto;
+	height: 100%;
+	width: 100%;
+	color: white;
+	word-break: break-all;
+}
+
+.story-1 {
+	opacity: 0;
+	transition: opacity 4.5s;
+	word-break: break-word;
+	color: white;
+	font-size: 20px;
+}
+
+.story-2 {
+	opacity: 0;
+	transition: opacity 4.5s;
+	word-break: break-word;
+	color: white;
+	font-size: 20px;
+}
+
+.story-3 {
+	opacity: 0;
+	transition: opacity 4.5s;
+	word-break: break-word;
+	color: white;
+	font-size: 20px;
+}
+
+.icon-scroll-container {
+	position: absolute;
+    right: 17px;
+    bottom: 25%;
+}
