@@ -2400,9 +2400,11 @@ import { QuestHelper } from "./quest-helper.js";
 
             if (rebuildCamera) {
                 const posClone = camera.position.clone();
+                const rotation = camera.rotation.y;
                 camera = new THREE.PerspectiveCamera(45, newWidth / canvasHeight, 1, 10000);
                 camera.position.set(posClone.x, posClone.y, posClone.z);
                 camera.add(audioListener);
+                camera.rotation.y = rotation;
             }
         
             // renderer.setSize(window.innerWidth, window.innerHeight);

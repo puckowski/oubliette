@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode development",
-    "buildMin": "node minify"
+    "buildMin": "node minify",
+    "buildBundle": "rollup .\\assets\\js\\maze3d.js --file .\\assets\\js\\bundle.js --format iife",
+    "buildAll": "npm run buildBundle && npm run buildMin"
   },
   "repository": {
     "type": "git",

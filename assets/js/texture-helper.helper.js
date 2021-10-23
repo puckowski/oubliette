@@ -621,3 +621,5 @@ export class TextureHelper {
         wallTextureMap.set('woman_2', { geometry: personGeometry, material: woman2Material });
     }
 }
+
+export default TextureHelper;
