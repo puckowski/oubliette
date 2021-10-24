@@ -331,7 +331,11 @@ Oubliette.Input.prototype._onJoykeyStateChange = function(event, pressed) {
             this.joykeys.stats = pressed;
             this.joykeys.hasInput = true;
             break;
-            
+        case "keyskills":
+            this.joykeys.skills = pressed;
+            this.joykeys.hasInput = true;
+            break;
+
         case "keyup":
             this.joykeys.up = pressed;
             this.joykeys.hasInput = true;

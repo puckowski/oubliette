@@ -51,6 +51,7 @@ import { QuestHelper } from "./quest-helper.js";
         ['attack_mage', 'assets/sound/magicSmite.wav'],
         ['attack_range', 'assets/sound/shootBow.ogg'],
         ['bounty', 'assets/sound/sound_bounty.ogg'],
+        ['brew', 'assets/sound/brew_pot.wav'],
         ['demon_encounter', 'assets/sound/demon_encounter.mp3'],
         ['orc_encounter', 'assets/sound/orc_encounter.wav'],
         ['rat_encounter', 'assets/sound/rat_encounter.ogg'],
@@ -2072,14 +2073,44 @@ import { QuestHelper } from "./quest-helper.js";
         }
     }
 
-    function showInventory() {
+    function showSkills() {
+        const skillsEle = document.getElementById('skillsContainer');
+        const skillsTextEle = document.getElementById('skills');
+
+        if (skillsEle.hasAttribute('hidden') === true) {
+            hideInterfaces();
+
+            skillsEle.removeAttribute('hidden');
+
+            let top = Math.round((((window.innerHeight / 10) * 6) / 2) - 19);
+            let left = Math.round(((window.innerWidth / 2) / 2) - 19);
+            skillsEle.style.width = Math.round(window.innerWidth / 2) + 'px';
+            skillsEle.style.height = Math.round((window.innerHeight / 10) * 4) + 'px';
+            skillsEle.style.top = top + 'px';
+            skillsEle.style.left = left + 'px';
+
+            const herbXp = player.getHerblaw();
+            const herbLvl = player.getSkillLevel(herbXp);
+
+            let skillsText = 'Skills:<br>';
+            skillsText += 'Herblaw Level: ' + herbLvl + '/100 (' + herbXp + ' Experience)';
+
+            skillsTextEle.innerHTML = skillsText;
+        } else {
+            skillsEle.setAttribute('hidden', true);
+        }
+    }
+
+    function showInventory(hideInterfacesFlag = true) {
         removedItemSet = [];
 
         const invEle = document.getElementById('inventoryContainer');
         const invItemsEle = document.getElementById('inventory');
 
         if (invEle.hasAttribute('hidden') === true) {
-            hideInterfaces();
+            if (hideInterfacesFlag) {
+                hideInterfaces();
+            }
 
             invEle.removeAttribute('hidden');
 
@@ -2126,19 +2157,25 @@ import { QuestHelper } from "./quest-helper.js";
                             map: soundMap,
                             helper: soundHelper
                         });
-                        invItemsEle.removeChild(parentItem);
 
-                        removedItemSet.forEach(removedIndex => {
-                            if (removedIndex < index) {
-                                index--;
+                        if (typeof reloadInv === 'object') {
+                            showOkDialog(reloadInv.message);
+                        } else {
+                            invItemsEle.removeChild(parentItem);
+
+                            removedItemSet.forEach(removedIndex => {
+                                if (removedIndex < index) {
+                                    index--;
+                                }
+                            });
+
+                            player.removeItem(index);
+                            removedItemSet.push(index);
+
+                            if (reloadInv) {
+                                showInventory();
+                                showInventory();
                             }
-                        });
-
-                        player.removeItem(index);
-                        removedItemSet.push(index);
-                        if (reloadInv) {
-                            showInventory();
-                            showInventory();
                         }
                     } else if (playerInventory.isInspectMode() === true) {
                         dialogHelper.setCurrentText(item.getDescriptionLong());
@@ -2491,7 +2528,7 @@ import { QuestHelper } from "./quest-helper.js";
             soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'leather');
 
             // hideInterfaces();
-            showInventory();
+            showInventory(false);
 
             input.joykeys.inv = false;
         }
@@ -2501,6 +2538,12 @@ import { QuestHelper } from "./quest-helper.js";
             showStats();
 
             input.joykeys.stats = false;
+        }
+
+        if (input.joykeys.skills) {
+            showSkills();
+
+            input.joykeys.skills = false;
         }
 
         const currStatusBarHtml = player.lastStatusString;
@@ -2573,12 +2616,14 @@ import { QuestHelper } from "./quest-helper.js";
 
         switch (code) {
             case -1: {
-                // Rat
+                // Skeleton
                 monster.setHealth(6);
                 monster.setMaxAttack(2);
                 monster.setMaxDebuff(1);
 
                 let items = [];
+                const herb1 = itemMap.get('Amaryx Herb');
+                const herb2 = itemMap.get('Drosdt Herb');
                 const cheese = itemMap.get('Cheese');
                 const coins = itemMap.get('Coins');
                 const book = itemMap.get('Priest\'s Book');
@@ -2610,6 +2655,10 @@ import { QuestHelper } from "./quest-helper.js";
                 items.push(dagger);
                 items.push(berry);
                 items.push(attackPot);
+                items.push(herb1);
+                items.push(herb1);
+                items.push(herb2);
+                items.push(herb2);
 
                 monster.setItems(items);
 
@@ -2634,6 +2683,8 @@ import { QuestHelper } from "./quest-helper.js";
                 monster.setMaxDebuff(2);
 
                 let items = [];
+                const herb1 = itemMap.get('Thamarin Herb');
+                const herb2 = itemMap.get('Runlyf Herb');
                 const beer = itemMap.get('Glass of Beer');
                 const liver = itemMap.get('Liver');
                 const coins = itemMap.get('Coins');
@@ -2665,6 +2716,10 @@ import { QuestHelper } from "./quest-helper.js";
                 items.push(berry);
                 items.push(berry);
                 items.push(attackPot);
+                items.push(herb1);
+                items.push(herb1);
+                items.push(herb2);
+                items.push(herb2);
 
                 monster.setItems(items);
 
@@ -2689,6 +2744,7 @@ import { QuestHelper } from "./quest-helper.js";
                 monster.setMaxDebuff(3);
 
                 let items = [];
+                const herb1 = itemMap.get('Greelyn Herb');
                 const beer = itemMap.get('Mug of Beer');
                 const meat = itemMap.get('Meat');
                 const coins = itemMap.get('Coins');
@@ -2720,6 +2776,8 @@ import { QuestHelper } from "./quest-helper.js";
                 items.push(earthStaff);
                 items.push(book);
                 items.push(mace);
+                items.push(herb1);
+                items.push(herb1);
 
                 monster.setItems(items);
 
@@ -2744,6 +2802,8 @@ import { QuestHelper } from "./quest-helper.js";
                 monster.setMaxDebuff(4);
 
                 let items = [];
+                const herb1 = itemMap.get('Forthul Herb');
+                const herb2 = itemMap.get('Brawa Herb');
                 const beer = itemMap.get('Mug of Beer');
                 const meat = itemMap.get('Meat');
                 const coins = itemMap.get('Coins');
@@ -2778,6 +2838,10 @@ import { QuestHelper } from "./quest-helper.js";
                 items.push(shield2);
                 items.push(shield3);
                 items.push(shield3);
+                items.push(herb1);
+                items.push(herb1);
+                items.push(herb2);
+                items.push(herb2);
 
                 monster.setItems(items);
 
@@ -2849,6 +2913,7 @@ import { QuestHelper } from "./quest-helper.js";
                 monster.setMaxDebuff(4);
 
                 let items = [];
+                const herb1 = itemMap.get('Amaryx Herb');
                 const beer = itemMap.get('Glass of Beer');
                 const liver = itemMap.get('Liver');
                 const coins = itemMap.get('Coins');
@@ -2878,6 +2943,8 @@ import { QuestHelper } from "./quest-helper.js";
                 items.push(book2);
                 items.push(sword);
                 items.push(wisdomStaff);
+                items.push(herb1);
+                items.push(herb1);
 
                 monster.setItems(items);
 
@@ -2902,6 +2969,8 @@ import { QuestHelper } from "./quest-helper.js";
                 monster.setMaxDebuff(3);
 
                 let items = [];
+                const herb1 = itemMap.get('Drosdt Herb');
+                const herb2 = itemMap.get('Brawa Herb');
                 const beer = itemMap.get('Mug of Beer');
                 const meat = itemMap.get('Meat');
                 const coins = itemMap.get('Coins');
@@ -2935,6 +3004,10 @@ import { QuestHelper } from "./quest-helper.js";
                 items.push(healthPot);
                 items.push(compoundBow);
                 items.push(shield2);
+                items.push(herb1);
+                items.push(herb1);
+                items.push(herb2);
+                items.push(herb2);
 
                 monster.setItems(items);
 
@@ -2959,6 +3032,7 @@ import { QuestHelper } from "./quest-helper.js";
                 monster.setMaxDebuff(3);
 
                 let items = [];
+                const herb1 = itemMap.get('Greelyn Herb');
                 const beer = itemMap.get('Mug of Beer');
                 const meat = itemMap.get('Meat');
                 const coins = itemMap.get('Coins');
@@ -2995,6 +3069,8 @@ import { QuestHelper } from "./quest-helper.js";
                 items.push(broadSword);
                 items.push(ring1);
                 items.push(shield1);
+                items.push(herb1);
+                items.push(herb1);
 
                 monster.setItems(items);
 
@@ -3019,6 +3095,8 @@ import { QuestHelper } from "./quest-helper.js";
                 monster.setMaxDebuff(3);
 
                 let items = [];
+                const herb1 = itemMap.get('Runlyf Herb');
+                const herb2 = itemMap.get('Brawa Herb');
                 const beer = itemMap.get('Mug of Beer');
                 const meat = itemMap.get('Meat');
                 const coins = itemMap.get('Coins');
@@ -3060,6 +3138,10 @@ import { QuestHelper } from "./quest-helper.js";
                 items.push(fireStaff);
                 items.push(fireStaff);
                 items.push(shield1);
+                items.push(herb1);
+                items.push(herb1);
+                items.push(herb2);
+                items.push(herb2);
 
                 monster.setItems(items);
 
@@ -3084,6 +3166,7 @@ import { QuestHelper } from "./quest-helper.js";
                 monster.setMaxDebuff(2);
 
                 let items = [];
+                const herb1 = itemMap.get('Amaryx Herb');
                 const beer = itemMap.get('Glass of Beer');
                 const liver = itemMap.get('Liver');
                 const coins = itemMap.get('Coins');
@@ -3116,6 +3199,8 @@ import { QuestHelper } from "./quest-helper.js";
                 items.push(berry);
                 items.push(berry);
                 items.push(attackPot);
+                items.push(herb1);
+                items.push(herb1);
 
                 monster.setItems(items);
 
@@ -3140,6 +3225,7 @@ import { QuestHelper } from "./quest-helper.js";
                 monster.setMaxDebuff(2);
 
                 let items = [];
+                const herb1 = itemMap.get('Amaryx Herb');
                 const beer = itemMap.get('Glass of Beer');
                 const liver = itemMap.get('Liver');
                 const coins = itemMap.get('Coins');
@@ -3172,6 +3258,8 @@ import { QuestHelper } from "./quest-helper.js";
                 items.push(berry);
                 items.push(berry);
                 items.push(attackPot);
+                items.push(herb1);
+                items.push(herb1);
 
                 monster.setItems(items);
 
@@ -3258,6 +3346,9 @@ import { QuestHelper } from "./quest-helper.js";
     }
 
     function hideInterfaces() {
+        const skillsEle = document.getElementById('skillsContainer');
+        skillsEle.setAttribute('hidden', true);
+
         const lootEle = document.getElementById('lootContainer');
         lootEle.setAttribute('hidden', true);
 

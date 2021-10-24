@@ -24,11 +24,11 @@ body {
 }
 
 .div-control-item-narrow {
-	width: 12.5vw !important;
+	width: 11.11vw !important;
 }
 
 .div-control {
-	flex-basis: 12.5%; 
+	flex-basis: 11.11%; 
 	display: flex; 
 	justify-content: center;
 	user-select: none;

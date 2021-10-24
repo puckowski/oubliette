@@ -159,6 +159,8 @@
             this.mageBonus = 0;
             this.rangeBonus = 0;
             this.armorBonus = 0;
+
+            this.herblaw = 0;
         }
 
         toJsonObject() {
@@ -188,6 +190,8 @@
             player.mageBonus = this.mageBonus;
             player.rangeBonus = this.rangeBonus;
             player.armorBonus = this.armorBonus;
+
+            player.herblaw = this.herblaw;
 
             return player;
         }
@@ -232,6 +236,31 @@
             this.mageBonus = player.mageBonus;
             this.rangeBonus = player.rangeBonus;
             this.armorBonus = player.armorBonus;
+
+            this.herblaw = player.herblaw;
+            if (!this.herblaw) {
+                this.herblaw = 0;
+            }
+        }
+
+        boostHerblaw(xp) {
+            this.herblaw += xp;
+        }
+
+        getHerblaw() {
+            return this.herblaw;
+        }
+
+        getSkillLevel(experience) {
+            let lvl = (experience / 100.0) + 1;
+
+            lvl = Math.floor(lvl);
+
+            if (lvl > 100) {
+                lvl = 100;
+            }
+
+            return lvl;
         }
 
         getMaxArmorBonus() {
@@ -2332,6 +2361,226 @@
             gameItem60.setUsable(false);
             gameItem60.setArmorBonus(4);
             itemMap.set(gameItem60.getName(), gameItem60);
+
+            let gameItem61 = new GameItem('Forthul Herb', 'assets/images/sprites/herb_1.png');
+            gameItem61.setAttackBuff(0);
+            gameItem61.setDefenceBuff(0);
+            gameItem61.setCoins(0);
+            gameItem61.setHealth(0);
+            gameItem61.setMagicBuff(0);
+            gameItem61.setRangeBuff(0);
+            gameItem61.setDescription('A leafy herb used for healing.');
+            gameItem61.setUsable(true);
+            gameItem61.setUseFunction((soundObj) => {
+                if (player.getSkillLevel(player.getHerblaw()) < 50) {
+                    return { message: 'You need level 50 herblaw to use this herb.' };
+                }
+
+                const pot = itemMap.get('Health Potion');
+                if (player.canAddItem() === true) {
+                    player.addItem(pot);
+                }
+
+                player.boostHerblaw(300);
+
+                const soundHelper = soundObj.helper;
+                const audioListener = soundObj.listener;
+                const audioLoader = soundObj.loader;
+                const soundMap = soundObj.map;
+
+                soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'brew');
+
+                return true;
+            });
+            itemMap.set(gameItem61.getName(), gameItem61);
+
+            let gameItem62 = new GameItem('Amaryx Herb', 'assets/images/sprites/herb_2.png');
+            gameItem62.setAttackBuff(0);
+            gameItem62.setDefenceBuff(0);
+            gameItem62.setCoins(0);
+            gameItem62.setHealth(0);
+            gameItem62.setMagicBuff(0);
+            gameItem62.setRangeBuff(0);
+            gameItem62.setDescription('A leafy herb used for dexterity.');
+            gameItem62.setUsable(true);
+            gameItem62.setUseFunction((soundObj) => {
+                const pot = itemMap.get('Attack Potion');
+                if (player.canAddItem() === true) {
+                    player.addItem(pot);
+                }
+
+                player.boostHerblaw(150);
+
+                const soundHelper = soundObj.helper;
+                const audioListener = soundObj.listener;
+                const audioLoader = soundObj.loader;
+                const soundMap = soundObj.map;
+
+                soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'brew');
+
+                return true;
+            });
+            itemMap.set(gameItem62.getName(), gameItem62);
+
+            let gameItem63 = new GameItem('Greelyn Herb', 'assets/images/sprites/herb_3.png');
+            gameItem63.setAttackBuff(0);
+            gameItem63.setDefenceBuff(0);
+            gameItem63.setCoins(0);
+            gameItem63.setHealth(0);
+            gameItem63.setMagicBuff(0);
+            gameItem63.setRangeBuff(0);
+            gameItem63.setDescription('A leafy herb used for enchantments.');
+            gameItem63.setUsable(true);
+            gameItem63.setUseFunction((soundObj) => {
+                if (player.getSkillLevel(player.getHerblaw()) < 10) {
+                    return { message: 'You need level 10 herblaw to use this herb.' };
+                }
+
+                const pot = itemMap.get('Mage Potion');
+                if (player.canAddItem() === true) {
+                    player.addItem(pot);
+                }
+
+                player.boostHerblaw(150);
+
+                const soundHelper = soundObj.helper;
+                const audioListener = soundObj.listener;
+                const audioLoader = soundObj.loader;
+                const soundMap = soundObj.map;
+
+                soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'brew');
+
+                return true;
+            });
+            itemMap.set(gameItem63.getName(), gameItem63);
+
+            let gameItem64 = new GameItem('Runlyf Herb', 'assets/images/sprites/herb_4.png');
+            gameItem64.setAttackBuff(0);
+            gameItem64.setDefenceBuff(0);
+            gameItem64.setCoins(0);
+            gameItem64.setHealth(0);
+            gameItem64.setMagicBuff(0);
+            gameItem64.setRangeBuff(0);
+            gameItem64.setDescription('A leafy herb used for good vision.');
+            gameItem64.setUsable(true);
+            gameItem64.setUseFunction((soundObj) => {
+                if (player.getSkillLevel(player.getHerblaw()) < 10) {
+                    return { message: 'You need level 10 herblaw to use this herb.' };
+                }
+
+                const pot = itemMap.get('Range Potion');
+                if (player.canAddItem() === true) {
+                    player.addItem(pot);
+                }
+
+                player.boostHerblaw(150);
+
+                const soundHelper = soundObj.helper;
+                const audioListener = soundObj.listener;
+                const audioLoader = soundObj.loader;
+                const soundMap = soundObj.map;
+
+                soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'brew');
+
+                return true;
+            });
+            itemMap.set(gameItem64.getName(), gameItem64);
+
+            let gameItem65 = new GameItem('Thamarin Herb', 'assets/images/sprites/herb_5.png');
+            gameItem65.setAttackBuff(0);
+            gameItem65.setDefenceBuff(0);
+            gameItem65.setCoins(0);
+            gameItem65.setHealth(0);
+            gameItem65.setMagicBuff(0);
+            gameItem65.setRangeBuff(0);
+            gameItem65.setDescription('A leafy herb used for curing sickness.');
+            gameItem65.setUsable(true);
+            gameItem65.setUseFunction((soundObj) => {
+                if (player.getSkillLevel(player.getHerblaw()) < 15) {
+                    return { message: 'You need level 15 herblaw to use this herb.' };
+                }
+
+                const pot = itemMap.get('Cough Remedy');
+                if (player.canAddItem() === true) {
+                    player.addItem(pot);
+                }
+
+                player.boostHerblaw(400);
+
+                const soundHelper = soundObj.helper;
+                const audioListener = soundObj.listener;
+                const audioLoader = soundObj.loader;
+                const soundMap = soundObj.map;
+
+                soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'brew');
+
+                return true;
+            });
+            itemMap.set(gameItem65.getName(), gameItem65);
+
+            let gameItem66 = new GameItem('Drosdt Herb', 'assets/images/sprites/herb_6.png');
+            gameItem66.setAttackBuff(0);
+            gameItem66.setDefenceBuff(0);
+            gameItem66.setCoins(0);
+            gameItem66.setHealth(0);
+            gameItem66.setMagicBuff(0);
+            gameItem66.setRangeBuff(0);
+            gameItem66.setDescription('A leafy herb used for fortitude.');
+            gameItem66.setUsable(true);
+            gameItem66.setUseFunction((soundObj) => {
+                if (player.getSkillLevel(player.getHerblaw()) < 5) {
+                    return { message: 'You need level 5 herblaw to use this herb.' };
+                }
+
+                const pot = itemMap.get('Defence Potion');
+                if (player.canAddItem() === true) {
+                    player.addItem(pot);
+                }
+
+                player.boostHerblaw(150);
+
+                const soundHelper = soundObj.helper;
+                const audioListener = soundObj.listener;
+                const audioLoader = soundObj.loader;
+                const soundMap = soundObj.map;
+
+                soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'brew');
+
+                return true;
+            });
+            itemMap.set(gameItem66.getName(), gameItem66);
+
+            let gameItem67 = new GameItem('Brawa Herb', 'assets/images/sprites/herb_7.png');
+            gameItem67.setAttackBuff(0);
+            gameItem67.setDefenceBuff(0);
+            gameItem67.setCoins(0);
+            gameItem67.setHealth(0);
+            gameItem67.setMagicBuff(0);
+            gameItem67.setRangeBuff(0);
+            gameItem67.setDescription('A leafy herb used for a variety of ailments.');
+            gameItem67.setUsable(true);
+            gameItem67.setUseFunction((soundObj) => {
+                if (player.getSkillLevel(player.getHerblaw()) < 25) {
+                    return { message: 'You need level 25 herblaw to use this herb.' };
+                }
+
+                const pot = itemMap.get('Restore Potion');
+                if (player.canAddItem() === true) {
+                    player.addItem(pot);
+                }
+
+                player.boostHerblaw(150);
+
+                const soundHelper = soundObj.helper;
+                const audioListener = soundObj.listener;
+                const audioLoader = soundObj.loader;
+                const soundMap = soundObj.map;
+
+                soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'brew');
+
+                return true;
+            });
+            itemMap.set(gameItem67.getName(), gameItem67);
         }
     }
 
@@ -2839,6 +3088,7 @@
             ['attack_mage', 'assets/sound/magicSmite.wav'],
             ['attack_range', 'assets/sound/shootBow.ogg'],
             ['bounty', 'assets/sound/sound_bounty.ogg'],
+            ['brew', 'assets/sound/brew_pot.wav'],
             ['demon_encounter', 'assets/sound/demon_encounter.mp3'],
             ['orc_encounter', 'assets/sound/orc_encounter.wav'],
             ['rat_encounter', 'assets/sound/rat_encounter.ogg'],
@@ -4860,14 +5110,44 @@
             }
         }
 
-        function showInventory() {
+        function showSkills() {
+            const skillsEle = document.getElementById('skillsContainer');
+            const skillsTextEle = document.getElementById('skills');
+
+            if (skillsEle.hasAttribute('hidden') === true) {
+                hideInterfaces();
+
+                skillsEle.removeAttribute('hidden');
+
+                let top = Math.round((((window.innerHeight / 10) * 6) / 2) - 19);
+                let left = Math.round(((window.innerWidth / 2) / 2) - 19);
+                skillsEle.style.width = Math.round(window.innerWidth / 2) + 'px';
+                skillsEle.style.height = Math.round((window.innerHeight / 10) * 4) + 'px';
+                skillsEle.style.top = top + 'px';
+                skillsEle.style.left = left + 'px';
+
+                const herbXp = player.getHerblaw();
+                const herbLvl = player.getSkillLevel(herbXp);
+
+                let skillsText = 'Skills:<br>';
+                skillsText += 'Herblaw Level: ' + herbLvl + '/100 (' + herbXp + ' Experience)';
+
+                skillsTextEle.innerHTML = skillsText;
+            } else {
+                skillsEle.setAttribute('hidden', true);
+            }
+        }
+
+        function showInventory(hideInterfacesFlag = true) {
             removedItemSet = [];
 
             const invEle = document.getElementById('inventoryContainer');
             const invItemsEle = document.getElementById('inventory');
 
             if (invEle.hasAttribute('hidden') === true) {
-                hideInterfaces();
+                if (hideInterfacesFlag) {
+                    hideInterfaces();
+                }
 
                 invEle.removeAttribute('hidden');
 
@@ -4914,19 +5194,25 @@
                                 map: soundMap,
                                 helper: soundHelper
                             });
-                            invItemsEle.removeChild(parentItem);
 
-                            removedItemSet.forEach(removedIndex => {
-                                if (removedIndex < index) {
-                                    index--;
+                            if (typeof reloadInv === 'object') {
+                                showOkDialog(reloadInv.message);
+                            } else {
+                                invItemsEle.removeChild(parentItem);
+
+                                removedItemSet.forEach(removedIndex => {
+                                    if (removedIndex < index) {
+                                        index--;
+                                    }
+                                });
+
+                                player.removeItem(index);
+                                removedItemSet.push(index);
+
+                                if (reloadInv) {
+                                    showInventory();
+                                    showInventory();
                                 }
-                            });
-
-                            player.removeItem(index);
-                            removedItemSet.push(index);
-                            if (reloadInv) {
-                                showInventory();
-                                showInventory();
                             }
                         } else if (playerInventory.isInspectMode() === true) {
                             dialogHelper.setCurrentText(item.getDescriptionLong());
@@ -5279,7 +5565,7 @@
                 soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'leather');
 
                 // hideInterfaces();
-                showInventory();
+                showInventory(false);
 
                 input.joykeys.inv = false;
             }
@@ -5289,6 +5575,12 @@
                 showStats();
 
                 input.joykeys.stats = false;
+            }
+
+            if (input.joykeys.skills) {
+                showSkills();
+
+                input.joykeys.skills = false;
             }
 
             const currStatusBarHtml = player.lastStatusString;
@@ -5359,12 +5651,14 @@
 
             switch (code) {
                 case -1: {
-                    // Rat
+                    // Skeleton
                     monster.setHealth(6);
                     monster.setMaxAttack(2);
                     monster.setMaxDebuff(1);
 
                     let items = [];
+                    const herb1 = itemMap.get('Amaryx Herb');
+                    const herb2 = itemMap.get('Drosdt Herb');
                     const cheese = itemMap.get('Cheese');
                     const coins = itemMap.get('Coins');
                     const book = itemMap.get('Priest\'s Book');
@@ -5396,6 +5690,10 @@
                     items.push(dagger);
                     items.push(berry);
                     items.push(attackPot);
+                    items.push(herb1);
+                    items.push(herb1);
+                    items.push(herb2);
+                    items.push(herb2);
 
                     monster.setItems(items);
 
@@ -5420,6 +5718,8 @@
                     monster.setMaxDebuff(2);
 
                     let items = [];
+                    const herb1 = itemMap.get('Thamarin Herb');
+                    const herb2 = itemMap.get('Runlyf Herb');
                     const beer = itemMap.get('Glass of Beer');
                     const liver = itemMap.get('Liver');
                     const coins = itemMap.get('Coins');
@@ -5451,6 +5751,10 @@
                     items.push(berry);
                     items.push(berry);
                     items.push(attackPot);
+                    items.push(herb1);
+                    items.push(herb1);
+                    items.push(herb2);
+                    items.push(herb2);
 
                     monster.setItems(items);
 
@@ -5475,6 +5779,7 @@
                     monster.setMaxDebuff(3);
 
                     let items = [];
+                    const herb1 = itemMap.get('Greelyn Herb');
                     const beer = itemMap.get('Mug of Beer');
                     const meat = itemMap.get('Meat');
                     const coins = itemMap.get('Coins');
@@ -5506,6 +5811,8 @@
                     items.push(earthStaff);
                     items.push(book);
                     items.push(mace);
+                    items.push(herb1);
+                    items.push(herb1);
 
                     monster.setItems(items);
 
@@ -5530,6 +5837,8 @@
                     monster.setMaxDebuff(4);
 
                     let items = [];
+                    const herb1 = itemMap.get('Forthul Herb');
+                    const herb2 = itemMap.get('Brawa Herb');
                     const beer = itemMap.get('Mug of Beer');
                     const meat = itemMap.get('Meat');
                     const coins = itemMap.get('Coins');
@@ -5564,6 +5873,10 @@
                     items.push(shield2);
                     items.push(shield3);
                     items.push(shield3);
+                    items.push(herb1);
+                    items.push(herb1);
+                    items.push(herb2);
+                    items.push(herb2);
 
                     monster.setItems(items);
 
@@ -5635,6 +5948,7 @@
                     monster.setMaxDebuff(4);
 
                     let items = [];
+                    const herb1 = itemMap.get('Amaryx Herb');
                     const beer = itemMap.get('Glass of Beer');
                     const liver = itemMap.get('Liver');
                     const coins = itemMap.get('Coins');
@@ -5664,6 +5978,8 @@
                     items.push(book2);
                     items.push(sword);
                     items.push(wisdomStaff);
+                    items.push(herb1);
+                    items.push(herb1);
 
                     monster.setItems(items);
 
@@ -5688,6 +6004,8 @@
                     monster.setMaxDebuff(3);
 
                     let items = [];
+                    const herb1 = itemMap.get('Drosdt Herb');
+                    const herb2 = itemMap.get('Brawa Herb');
                     const beer = itemMap.get('Mug of Beer');
                     const meat = itemMap.get('Meat');
                     const coins = itemMap.get('Coins');
@@ -5721,6 +6039,10 @@
                     items.push(healthPot);
                     items.push(compoundBow);
                     items.push(shield2);
+                    items.push(herb1);
+                    items.push(herb1);
+                    items.push(herb2);
+                    items.push(herb2);
 
                     monster.setItems(items);
 
@@ -5745,6 +6067,7 @@
                     monster.setMaxDebuff(3);
 
                     let items = [];
+                    const herb1 = itemMap.get('Greelyn Herb');
                     const beer = itemMap.get('Mug of Beer');
                     const meat = itemMap.get('Meat');
                     const coins = itemMap.get('Coins');
@@ -5781,6 +6104,8 @@
                     items.push(broadSword);
                     items.push(ring1);
                     items.push(shield1);
+                    items.push(herb1);
+                    items.push(herb1);
 
                     monster.setItems(items);
 
@@ -5805,6 +6130,8 @@
                     monster.setMaxDebuff(3);
 
                     let items = [];
+                    const herb1 = itemMap.get('Runlyf Herb');
+                    const herb2 = itemMap.get('Brawa Herb');
                     const beer = itemMap.get('Mug of Beer');
                     const meat = itemMap.get('Meat');
                     const coins = itemMap.get('Coins');
@@ -5846,6 +6173,10 @@
                     items.push(fireStaff);
                     items.push(fireStaff);
                     items.push(shield1);
+                    items.push(herb1);
+                    items.push(herb1);
+                    items.push(herb2);
+                    items.push(herb2);
 
                     monster.setItems(items);
 
@@ -5870,6 +6201,7 @@
                     monster.setMaxDebuff(2);
 
                     let items = [];
+                    const herb1 = itemMap.get('Amaryx Herb');
                     const beer = itemMap.get('Glass of Beer');
                     const liver = itemMap.get('Liver');
                     const coins = itemMap.get('Coins');
@@ -5902,6 +6234,8 @@
                     items.push(berry);
                     items.push(berry);
                     items.push(attackPot);
+                    items.push(herb1);
+                    items.push(herb1);
 
                     monster.setItems(items);
 
@@ -5926,6 +6260,7 @@
                     monster.setMaxDebuff(2);
 
                     let items = [];
+                    const herb1 = itemMap.get('Amaryx Herb');
                     const beer = itemMap.get('Glass of Beer');
                     const liver = itemMap.get('Liver');
                     const coins = itemMap.get('Coins');
@@ -5958,6 +6293,8 @@
                     items.push(berry);
                     items.push(berry);
                     items.push(attackPot);
+                    items.push(herb1);
+                    items.push(herb1);
 
                     monster.setItems(items);
 
@@ -6044,6 +6381,9 @@
         }
 
         function hideInterfaces() {
+            const skillsEle = document.getElementById('skillsContainer');
+            skillsEle.setAttribute('hidden', true);
+
             const lootEle = document.getElementById('lootContainer');
             lootEle.setAttribute('hidden', true);
 

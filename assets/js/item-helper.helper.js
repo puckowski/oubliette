@@ -664,5 +664,225 @@ export class ItemHelper {
         gameItem60.setUsable(false);
         gameItem60.setArmorBonus(4);
         itemMap.set(gameItem60.getName(), gameItem60);
+
+        let gameItem61 = new GameItem('Forthul Herb', 'assets/images/sprites/herb_1.png');
+        gameItem61.setAttackBuff(0);
+        gameItem61.setDefenceBuff(0);
+        gameItem61.setCoins(0);
+        gameItem61.setHealth(0);
+        gameItem61.setMagicBuff(0);
+        gameItem61.setRangeBuff(0);
+        gameItem61.setDescription('A leafy herb used for healing.');
+        gameItem61.setUsable(true);
+        gameItem61.setUseFunction((soundObj) => {
+            if (player.getSkillLevel(player.getHerblaw()) < 50) {
+                return { message: 'You need level 50 herblaw to use this herb.' };
+            }
+
+            const pot = itemMap.get('Health Potion');
+            if (player.canAddItem() === true) {
+                player.addItem(pot);
+            }
+
+            player.boostHerblaw(300);
+
+            const soundHelper = soundObj.helper;
+            const audioListener = soundObj.listener;
+            const audioLoader = soundObj.loader;
+            const soundMap = soundObj.map;
+
+            soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'brew');
+
+            return true;
+        });
+        itemMap.set(gameItem61.getName(), gameItem61);
+
+        let gameItem62 = new GameItem('Amaryx Herb', 'assets/images/sprites/herb_2.png');
+        gameItem62.setAttackBuff(0);
+        gameItem62.setDefenceBuff(0);
+        gameItem62.setCoins(0);
+        gameItem62.setHealth(0);
+        gameItem62.setMagicBuff(0);
+        gameItem62.setRangeBuff(0);
+        gameItem62.setDescription('A leafy herb used for dexterity.');
+        gameItem62.setUsable(true);
+        gameItem62.setUseFunction((soundObj) => {
+            const pot = itemMap.get('Attack Potion');
+            if (player.canAddItem() === true) {
+                player.addItem(pot);
+            }
+
+            player.boostHerblaw(150);
+
+            const soundHelper = soundObj.helper;
+            const audioListener = soundObj.listener;
+            const audioLoader = soundObj.loader;
+            const soundMap = soundObj.map;
+
+            soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'brew');
+
+            return true;
+        });
+        itemMap.set(gameItem62.getName(), gameItem62);
+
+        let gameItem63 = new GameItem('Greelyn Herb', 'assets/images/sprites/herb_3.png');
+        gameItem63.setAttackBuff(0);
+        gameItem63.setDefenceBuff(0);
+        gameItem63.setCoins(0);
+        gameItem63.setHealth(0);
+        gameItem63.setMagicBuff(0);
+        gameItem63.setRangeBuff(0);
+        gameItem63.setDescription('A leafy herb used for enchantments.');
+        gameItem63.setUsable(true);
+        gameItem63.setUseFunction((soundObj) => {
+            if (player.getSkillLevel(player.getHerblaw()) < 10) {
+                return { message: 'You need level 10 herblaw to use this herb.' };
+            }
+
+            const pot = itemMap.get('Mage Potion');
+            if (player.canAddItem() === true) {
+                player.addItem(pot);
+            }
+
+            player.boostHerblaw(150);
+
+            const soundHelper = soundObj.helper;
+            const audioListener = soundObj.listener;
+            const audioLoader = soundObj.loader;
+            const soundMap = soundObj.map;
+
+            soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'brew');
+
+            return true;
+        });
+        itemMap.set(gameItem63.getName(), gameItem63);
+
+        let gameItem64 = new GameItem('Runlyf Herb', 'assets/images/sprites/herb_4.png');
+        gameItem64.setAttackBuff(0);
+        gameItem64.setDefenceBuff(0);
+        gameItem64.setCoins(0);
+        gameItem64.setHealth(0);
+        gameItem64.setMagicBuff(0);
+        gameItem64.setRangeBuff(0);
+        gameItem64.setDescription('A leafy herb used for good vision.');
+        gameItem64.setUsable(true);
+        gameItem64.setUseFunction((soundObj) => {
+            if (player.getSkillLevel(player.getHerblaw()) < 10) {
+                return { message: 'You need level 10 herblaw to use this herb.' };
+            }
+
+            const pot = itemMap.get('Range Potion');
+            if (player.canAddItem() === true) {
+                player.addItem(pot);
+            }
+
+            player.boostHerblaw(150);
+
+            const soundHelper = soundObj.helper;
+            const audioListener = soundObj.listener;
+            const audioLoader = soundObj.loader;
+            const soundMap = soundObj.map;
+
+            soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'brew');
+
+            return true;
+        });
+        itemMap.set(gameItem64.getName(), gameItem64);
+
+        let gameItem65 = new GameItem('Thamarin Herb', 'assets/images/sprites/herb_5.png');
+        gameItem65.setAttackBuff(0);
+        gameItem65.setDefenceBuff(0);
+        gameItem65.setCoins(0);
+        gameItem65.setHealth(0);
+        gameItem65.setMagicBuff(0);
+        gameItem65.setRangeBuff(0);
+        gameItem65.setDescription('A leafy herb used for curing sickness.');
+        gameItem65.setUsable(true);
+        gameItem65.setUseFunction((soundObj) => {
+            if (player.getSkillLevel(player.getHerblaw()) < 15) {
+                return { message: 'You need level 15 herblaw to use this herb.' };
+            }
+
+            const pot = itemMap.get('Cough Remedy');
+            if (player.canAddItem() === true) {
+                player.addItem(pot);
+            }
+
+            player.boostHerblaw(400);
+
+            const soundHelper = soundObj.helper;
+            const audioListener = soundObj.listener;
+            const audioLoader = soundObj.loader;
+            const soundMap = soundObj.map;
+
+            soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'brew');
+
+            return true;
+        });
+        itemMap.set(gameItem65.getName(), gameItem65);
+
+        let gameItem66 = new GameItem('Drosdt Herb', 'assets/images/sprites/herb_6.png');
+        gameItem66.setAttackBuff(0);
+        gameItem66.setDefenceBuff(0);
+        gameItem66.setCoins(0);
+        gameItem66.setHealth(0);
+        gameItem66.setMagicBuff(0);
+        gameItem66.setRangeBuff(0);
+        gameItem66.setDescription('A leafy herb used for fortitude.');
+        gameItem66.setUsable(true);
+        gameItem66.setUseFunction((soundObj) => {
+            if (player.getSkillLevel(player.getHerblaw()) < 5) {
+                return { message: 'You need level 5 herblaw to use this herb.' };
+            }
+
+            const pot = itemMap.get('Defence Potion');
+            if (player.canAddItem() === true) {
+                player.addItem(pot);
+            }
+
+            player.boostHerblaw(150);
+
+            const soundHelper = soundObj.helper;
+            const audioListener = soundObj.listener;
+            const audioLoader = soundObj.loader;
+            const soundMap = soundObj.map;
+
+            soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'brew');
+
+            return true;
+        });
+        itemMap.set(gameItem66.getName(), gameItem66);
+
+        let gameItem67 = new GameItem('Brawa Herb', 'assets/images/sprites/herb_7.png');
+        gameItem67.setAttackBuff(0);
+        gameItem67.setDefenceBuff(0);
+        gameItem67.setCoins(0);
+        gameItem67.setHealth(0);
+        gameItem67.setMagicBuff(0);
+        gameItem67.setRangeBuff(0);
+        gameItem67.setDescription('A leafy herb used for a variety of ailments.');
+        gameItem67.setUsable(true);
+        gameItem67.setUseFunction((soundObj) => {
+            if (player.getSkillLevel(player.getHerblaw()) < 25) {
+                return { message: 'You need level 25 herblaw to use this herb.' };
+            }
+
+            const pot = itemMap.get('Restore Potion');
+            if (player.canAddItem() === true) {
+                player.addItem(pot);
+            }
+
+            player.boostHerblaw(150);
+
+            const soundHelper = soundObj.helper;
+            const audioListener = soundObj.listener;
+            const audioLoader = soundObj.loader;
+            const soundMap = soundObj.map;
+
+            soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'brew');
+
+            return true;
+        });
+        itemMap.set(gameItem67.getName(), gameItem67);
     }
 }

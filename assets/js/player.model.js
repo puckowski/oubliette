@@ -30,6 +30,8 @@ export class Player {
         this.mageBonus = 0;
         this.rangeBonus = 0;
         this.armorBonus = 0;
+
+        this.herblaw = 0;
     }
 
     toJsonObject() {
@@ -59,6 +61,8 @@ export class Player {
         player.mageBonus = this.mageBonus;
         player.rangeBonus = this.rangeBonus;
         player.armorBonus = this.armorBonus;
+
+        player.herblaw = this.herblaw;
 
         return player;
     }
@@ -103,6 +107,31 @@ export class Player {
         this.mageBonus = player.mageBonus;
         this.rangeBonus = player.rangeBonus;
         this.armorBonus = player.armorBonus;
+
+        this.herblaw = player.herblaw;
+        if (!this.herblaw) {
+            this.herblaw = 0;
+        }
+    }
+
+    boostHerblaw(xp) {
+        this.herblaw += xp;
+    }
+
+    getHerblaw() {
+        return this.herblaw;
+    }
+
+    getSkillLevel(experience) {
+        let lvl = (experience / 100.0) + 1;
+
+        lvl = Math.floor(lvl);
+
+        if (lvl > 100) {
+            lvl = 100;
+        }
+
+        return lvl;
     }
 
     getMaxArmorBonus() {
