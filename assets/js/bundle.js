@@ -1633,6 +1633,12 @@
             });
             wallTextureMap.set('forest_1', { geometry: wallGeometry, material: forest1Material });
 
+            const roof1Material = new THREE.MeshPhongMaterial({
+                map: loader.load('assets/images/textures/roof_1.png'),
+                transparent: true
+            });
+            wallTextureMap.set('roof_2', { geometry: wallGeometry, material: roof1Material });
+
             const forest2Material = new THREE.MeshPhongMaterial({
                 map: loader.load('assets/images/textures/forest_2.png')
             });
@@ -4429,6 +4435,11 @@
                             wall.position.set(position.x, position.y, position.z);
                             scene.add(wall);
 
+                            const roofObj = wallMap.get('roof_2');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+
                             break;
                         }
                         case 4: {
@@ -4437,6 +4448,11 @@
                             wall.position.set(position.x, position.y, position.z);
                             scene.add(wall);
 
+                            const roofObj = wallMap.get('roof_2');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+
                             break;
                         }
                         case 5: {
@@ -4444,6 +4460,11 @@
                             const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
                             wall.position.set(position.x, position.y, position.z);
                             scene.add(wall);
+
+                            const roofObj = wallMap.get('roof_2');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
 
                             break;
                         }
@@ -4525,6 +4546,11 @@
                             wall.position.set(position.x, position.y, position.z);
                             scene.add(wall);
 
+                            const roofObj = wallMap.get('roof_2');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+
                             break;
                         }
                         case 16: {
@@ -4533,6 +4559,11 @@
                             wall.position.set(position.x, position.y, position.z);
                             scene.add(wall);
 
+                            const roofObj = wallMap.get('roof_2');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+
                             break;
                         }
                         case 17: {
@@ -4540,6 +4571,11 @@
                             const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
                             wall.position.set(position.x, position.y, position.z);
                             scene.add(wall);
+
+                            const roofObj = wallMap.get('roof_2');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
 
                             break;
                         }
@@ -4557,6 +4593,14 @@
                             wall.position.set(position.x, position.y - 25, position.z);
                             scene.add(wall);
                             planeList.push(wall);
+
+                            break;
+                        }
+                        case 20: {
+                            const roofObj = wallMap.get('roof_2');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
 
                             break;
                         }
@@ -6565,7 +6609,7 @@
         }
 
         function onMove(position, newTx, newTy) {
-            if (map[newTx][newTy] === 1 || map[newTx][newTy] === 'D') {
+            if (map[newTx][newTy] === 1 || map[newTx][newTy] === 20 || map[newTx][newTy] === 'D') {
                 camera.position.x = position.x;
                 camera.position.z = position.z;
 
@@ -6794,9 +6838,9 @@
             }
             
             if (typeof map[newTy][newTx] === 'string' && map[newTy][newTx].includes('_') && map[newTy][newTx].includes('A') === false
-                && (initialMapCode != 1 || secondaryMapCode != -1)) {
+                && ((initialMapCode != 1 && initialMapCode != 20) || secondaryMapCode != -1)) {
                 collides = true;
-            } else if (map[newTy][newTx] != 1 && !isNaN(map[newTy][newTx])) {
+            } else if ((map[newTy][newTx] != 1 && map[newTy][newTx] != 20) && !isNaN(map[newTy][newTx])) {
                 collides = true;
             } else if (typeof map[newTy][newTx] === 'string' && map[newTy][newTx].startsWith('A') === true) {
                 let fullStr = map[newTy][newTx];

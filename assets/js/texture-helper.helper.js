@@ -532,6 +532,12 @@ export class TextureHelper {
         });
         wallTextureMap.set('forest_1', { geometry: wallGeometry, material: forest1Material });
 
+        const roof1Material = new THREE.MeshPhongMaterial({
+            map: loader.load('assets/images/textures/roof_1.png'),
+            transparent: true
+        });
+        wallTextureMap.set('roof_2', { geometry: wallGeometry, material: roof1Material });
+
         const forest2Material = new THREE.MeshPhongMaterial({
             map: loader.load('assets/images/textures/forest_2.png')
         });
