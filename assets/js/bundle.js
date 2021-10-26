@@ -4278,7 +4278,7 @@
                         case 111: {
                             const wallObj = wallMap.get('guard_1');
                             const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
-                            wall.position.set(position.x, position.y, position.z);
+                            wall.position.set(position.x, position.y + 5, position.z);
                             scene.add(wall);
                             planeList.push(wall);
 
