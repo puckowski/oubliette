@@ -677,8 +677,17 @@
             this.MODE_USE = 0;
             this.MODE_DROP = 1;
             this.MODE_INSPECT = 2;
+            this.MODE_SELL = 3;
 
             this.mode = this.MODE_USE;
+        }
+
+        isSellMode() {
+            return this.mode === this.MODE_SELL;
+        }
+
+        setSellMode() {
+            this.mode = this.MODE_SELL;
         }
 
         isInspectMode() {
@@ -706,6 +715,14 @@
         }
 
         useItem(player, item, soundHelper, audioListener, audioLoader, soundMap, soundObj) {
+            if (this.isSellMode()) {
+                soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'coin');
+
+                player.setCoins(player.getCoins() + item.getCoins());
+
+                return;
+            }
+
             const newAttack = player.getAttack() + item.getAttackBuff();
             const newHealth = player.getHealth() + item.getHealth();
             const newDefence = player.getDefence() + item.getDefenceBuff();
@@ -848,9 +865,18 @@
             this.y = null;
             this.healthBar = document.createElement('canvas');
             this.healthBarContext = this.healthBar.getContext('2d');
+            this.hasStore = false;
 
             //
             this.updateHealthBarPosition();
+        }
+
+        setHasStore(hasStore) {
+            this.hasStore = hasStore;
+        }
+
+        getHasStore() {
+            return this.hasStore;
         }
 
         fillHealthBar() {
@@ -1467,6 +1493,32 @@
             });
             wallTextureMap.set('woman_4', { geometry: animWoman2Geometry, material: animWoman2Material });
             animators.push(animWoman2Animator);
+
+            const animMan2TexturePath =  'assets/images/sprites/man_5.png';
+            const animMan2Texture = new  THREE.TextureLoader().load(animMan2TexturePath);
+            const animMan2Animator =  new  PlainAnimator(animMan2Texture, 5, 2, 10, 10);
+            const animMan2TextureFinal = animMan2Animator.init();  
+
+            const animMan2Geometry = new THREE.PlaneGeometry(80, 80);
+            const animMan2Material = new THREE.MeshBasicMaterial({
+                map: animMan2TextureFinal,
+                transparent: true
+            });
+            wallTextureMap.set('man_6', { geometry: animMan2Geometry, material: animMan2Material });
+            animators.push(animMan2Animator);
+
+            const animMan3TexturePath =  'assets/images/sprites/guard_1.png';
+            const animMan3Texture = new  THREE.TextureLoader().load(animMan3TexturePath);
+            const animMan3Animator =  new  PlainAnimator(animMan3Texture, 10, 1, 10, 10);
+            const animMan3TextureFinal = animMan3Animator.init();  
+
+            const animMan3Geometry = new THREE.PlaneGeometry(80, 100);
+            const animMan3Material = new THREE.MeshBasicMaterial({
+                map: animMan3TextureFinal,
+                transparent: true
+            });
+            wallTextureMap.set('guard_1', { geometry: animMan3Geometry, material: animMan3Material });
+            animators.push(animMan3Animator);
 
             const accentGeometry = new THREE.PlaneGeometry(50, 50);
             const bush1Material = new THREE.MeshBasicMaterial({
@@ -2581,6 +2633,33 @@
                 return true;
             });
             itemMap.set(gameItem67.getName(), gameItem67);
+
+            let gameItem68 = new GameItem('Tome of Herblaw', 'assets/images/sprites/book_8.PNG');
+            gameItem68.setAttackBuff(0);
+            gameItem68.setDefenceBuff(0);
+            gameItem68.setCoins(0);
+            gameItem68.setHealth(0);
+            gameItem68.setMagicBuff(0);
+            gameItem68.setRangeBuff(0);
+            gameItem68.setDescription('A tome which grants experience in herblaw.');
+            gameItem68.setUsable(true);
+            gameItem68.setUseFunction((soundObj) => {            
+                player.boostHerblaw(150);
+
+                return true;
+            });
+            itemMap.set(gameItem68.getName(), gameItem68);
+
+            let gameItem69 = new GameItem('Bread', 'assets/images/sprites/bread_1.png');
+            gameItem69.setAttackBuff(0);
+            gameItem69.setDefenceBuff(0);
+            gameItem69.setCoins(3);
+            gameItem69.setHealth(5);
+            gameItem69.setMagicBuff(0);
+            gameItem69.setRangeBuff(0);
+            gameItem69.setDescription('Some bread.');
+            gameItem69.setUsable(true);
+            itemMap.set(gameItem69.getName(), gameItem69);
         }
     }
 
@@ -3071,7 +3150,7 @@
             [2, 'assets/sound/forest_theme.mp3'],
             [3, 'assets/sound/axagon_theme.mp3'],
             [4, 'assets/sound/dungeon_theme.mp3'],
-            [5, 'assets/sound/town_theme.mp3'],
+            [5, 'assets/sound/forest_theme_2.mp3'],
             [6, 'assets/sound/dungeon_theme.mp3'],
             [7, 'assets/sound/forest_theme.mp3'],
             [8, 'assets/sound/battle_theme.mp3'],
@@ -3691,11 +3770,20 @@
                     dialog: {
                         100: 0,
                         105: 3,
-                        107: 0
+                        107: 0,
+                        111: 0
                     },
                     dialogMax: {
                         105: 2
                     },
+                    111: [
+                        {
+                            question: 'Be careful in the Freiyan Forest, adventurer. There are many orcs.',
+                            okCallback: () => {
+
+                            }
+                        }
+                    ],
                     107: [
                         {
                             question: 'Greetings adventurer! Would you like to buy a fine gambeson?',
@@ -4171,6 +4259,24 @@
                         }
                         case 109: {
                             const wallObj = wallMap.get('woman_4');
+                            const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                            wall.position.set(position.x, position.y, position.z);
+                            scene.add(wall);
+                            planeList.push(wall);
+
+                            break;
+                        }
+                        case 110: {
+                            const wallObj = wallMap.get('man_6');
+                            const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                            wall.position.set(position.x, position.y, position.z);
+                            scene.add(wall);
+                            planeList.push(wall);
+
+                            break;
+                        }
+                        case 111: {
+                            const wallObj = wallMap.get('guard_1');
                             const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
                             wall.position.set(position.x, position.y, position.z);
                             scene.add(wall);
@@ -5221,6 +5327,29 @@
                             player.removeItem(index);
 
                             soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'drop');
+                        } else if (playerInventory.isSellMode() === true) {
+                            const reloadInv = playerInventory.useItem(player, item, soundHelper, audioListener, audioLoader, soundMap, {
+                                listener: audioListener,
+                                loader: audioLoader,
+                                map: soundMap,
+                                helper: soundHelper
+                            });
+
+                            invItemsEle.removeChild(parentItem);
+
+                            removedItemSet.forEach(removedIndex => {
+                                if (removedIndex < index) {
+                                    index--;
+                                }
+                            });
+
+                            player.removeItem(index);
+                            removedItemSet.push(index);
+
+                            if (reloadInv) {
+                                showInventory();
+                                showInventory();
+                            }
                         }
                     };
                 });
@@ -5228,6 +5357,22 @@
                 const useButton = document.getElementById('inventoryUseBtn');
                 const dropButton = document.getElementById('inventoryDropBtn');
                 const inspectButton = document.getElementById('inventoryInspectBtn');
+                const sellButton = document.getElementById('inventorySellBtn');
+
+                if (encounterHelper && encounterHelper.getHasStore()) {
+                    sellButton.removeAttribute('hidden');
+
+                    sellButton.onclick = () => {
+                        playerInventory.setSellMode();
+
+                        useButton.style.border = '3px outset rgba(202,202,202,0.29)';
+                        dropButton.style.border = '3px outset rgba(202,202,202,0.29)';
+                        inspectButton.style.border = '3px outset rgba(202,202,202,0.29)';
+                        sellButton.style.border = '3px outset rgba(255,255,255,1)';
+                    };
+                } else {
+                    sellButton.setAttribute('hidden', true);
+                }
 
                 useButton.onclick = () => {
                     playerInventory.setUseMode();
@@ -5235,6 +5380,7 @@
                     useButton.style.border = '3px outset rgba(255,255,255,1)';
                     dropButton.style.border = '3px outset rgba(202,202,202,0.29)';
                     inspectButton.style.border = '3px outset rgba(202,202,202,0.29)';
+                    sellButton.style.border = '3px outset rgba(202,202,202,0.29)';
                 };
                 dropButton.onclick = () => {
                     playerInventory.setDropMode();
@@ -5242,6 +5388,7 @@
                     dropButton.style.border = '3px outset rgba(255,255,255,1)';
                     useButton.style.border = '3px outset rgba(202,202,202,0.29)';
                     inspectButton.style.border = '3px outset rgba(202,202,202,0.29)';
+                    sellButton.style.border = '3px outset rgba(202,202,202,0.29)';
                 };
                 inspectButton.onclick = () => {
                     playerInventory.setInspectMode();
@@ -5249,14 +5396,19 @@
                     inspectButton.style.border = '3px outset rgba(255,255,255,1)';
                     dropButton.style.border = '3px outset rgba(202,202,202,0.29)';
                     useButton.style.border = '3px outset rgba(202,202,202,0.29)';
+                    sellButton.style.border = '3px outset rgba(202,202,202,0.29)';
                 };
 
                 if (playerInventory.isUseMode() === true) {
                     useButton.style.border = '3px outset rgba(255,255,255,1)';
                     dropButton.style.border = '3px outset rgba(202,202,202,0.29)';
+                    sellButton.style.border = '3px outset rgba(202,202,202,0.29)';
+                    inspectButton.style.border = '3px outset rgba(202,202,202,0.29)';
                 } else {
                     dropButton.style.border = '3px outset rgba(255,255,255,1)';
                     useButton.style.border = '3px outset rgba(202,202,202,0.29)';
+                    sellButton.style.border = '3px outset rgba(202,202,202,0.29)';
+                    inspectButton.style.border = '3px outset rgba(202,202,202,0.29)';
                 }
             } else {
                 invEle.setAttribute('hidden', true);
@@ -5671,6 +5823,7 @@
                     const attackPot = itemMap.get('Attack Potion');
                     const bounty = itemMap.get('Ring of Bounty');
                     const leatherBody = itemMap.get('Leather Body');
+                    const bread = itemMap.get('Bread');
                     coins.setCoins(3);
                     book.setRarity(0.7);
                     items.push(leatherBody);
@@ -5694,6 +5847,7 @@
                     items.push(herb1);
                     items.push(herb2);
                     items.push(herb2);
+                    items.push(bread);
 
                     monster.setItems(items);
 
@@ -5732,6 +5886,7 @@
                     const attackPot = itemMap.get('Attack Potion');
                     const bounty = itemMap.get('Ring of Bounty');
                     const ironChain = itemMap.get('Iron Chainmail');
+                    const bread = itemMap.get('Bread');
                     coins.setCoins(6);
                     items.push(ironChain);
                     items.push(bounty);
@@ -5755,6 +5910,7 @@
                     items.push(herb1);
                     items.push(herb2);
                     items.push(herb2);
+                    items.push(bread);
 
                     monster.setItems(items);
 
@@ -5837,6 +5993,7 @@
                     monster.setMaxDebuff(4);
 
                     let items = [];
+                    const herbtome = itemMap.get('Tome of Herblaw');
                     const herb1 = itemMap.get('Forthul Herb');
                     const herb2 = itemMap.get('Brawa Herb');
                     const beer = itemMap.get('Mug of Beer');
@@ -5877,6 +6034,7 @@
                     items.push(herb1);
                     items.push(herb2);
                     items.push(herb2);
+                    items.push(herbtome);
 
                     monster.setItems(items);
 
@@ -5948,6 +6106,7 @@
                     monster.setMaxDebuff(4);
 
                     let items = [];
+                    const herbtome = itemMap.get('Tome of Herblaw');
                     const herb1 = itemMap.get('Amaryx Herb');
                     const beer = itemMap.get('Glass of Beer');
                     const liver = itemMap.get('Liver');
@@ -5980,6 +6139,7 @@
                     items.push(wisdomStaff);
                     items.push(herb1);
                     items.push(herb1);
+                    items.push(herbtome);
 
                     monster.setItems(items);
 
@@ -6004,6 +6164,7 @@
                     monster.setMaxDebuff(3);
 
                     let items = [];
+                    const herbtome = itemMap.get('Tome of Herblaw');
                     const herb1 = itemMap.get('Drosdt Herb');
                     const herb2 = itemMap.get('Brawa Herb');
                     const beer = itemMap.get('Mug of Beer');
@@ -6043,6 +6204,7 @@
                     items.push(herb1);
                     items.push(herb2);
                     items.push(herb2);
+                    items.push(herbtome);
 
                     monster.setItems(items);
 
@@ -6067,6 +6229,7 @@
                     monster.setMaxDebuff(3);
 
                     let items = [];
+                    const herbtome = itemMap.get('Tome of Herblaw');
                     const herb1 = itemMap.get('Greelyn Herb');
                     const beer = itemMap.get('Mug of Beer');
                     const meat = itemMap.get('Meat');
@@ -6106,6 +6269,7 @@
                     items.push(shield1);
                     items.push(herb1);
                     items.push(herb1);
+                    items.push(herbtome);
 
                     monster.setItems(items);
 
@@ -6130,6 +6294,7 @@
                     monster.setMaxDebuff(3);
 
                     let items = [];
+                    const herbtome = itemMap.get('Tome of Herblaw');
                     const herb1 = itemMap.get('Runlyf Herb');
                     const herb2 = itemMap.get('Brawa Herb');
                     const beer = itemMap.get('Mug of Beer');
@@ -6177,6 +6342,7 @@
                     items.push(herb1);
                     items.push(herb2);
                     items.push(herb2);
+                    items.push(herbtome);
 
                     monster.setItems(items);
 
@@ -6214,6 +6380,7 @@
                     const attackPot = itemMap.get('Attack Potion');
                     const bounty = itemMap.get('Ring of Bounty');
                     const ironChain = itemMap.get('Iron Chainmail');
+                    const bread = itemMap.get('Bread');
                     coins.setCoins(6);
                     items.push(ironChain);
                     items.push(bounty);
@@ -6236,6 +6403,8 @@
                     items.push(attackPot);
                     items.push(herb1);
                     items.push(herb1);
+                    items.push(bread);
+                    items.push(bread);
 
                     monster.setItems(items);
 
@@ -6260,6 +6429,7 @@
                     monster.setMaxDebuff(2);
 
                     let items = [];
+                    const bread = itemMap.get('Bread');
                     const herb1 = itemMap.get('Amaryx Herb');
                     const beer = itemMap.get('Glass of Beer');
                     const liver = itemMap.get('Liver');
@@ -6295,6 +6465,8 @@
                     items.push(attackPot);
                     items.push(herb1);
                     items.push(herb1);
+                    items.push(bread);
+                    items.push(bread);
 
                     monster.setItems(items);
 
@@ -6315,6 +6487,15 @@
             }
 
             return monster;
+        }
+
+        function setHasStore(personCode) {
+            if (personCode === 110) {
+                encounterHelper = new EncounterHelper();
+                encounterHelper.setHasStore(true);
+            } else if (personCode !== 110 && encounterHelper) {
+                encounterHelper.setHasStore(false);
+            }
         }
 
         function personEncounterRandom(newTy2, newTx2) {
@@ -6441,6 +6622,9 @@
             if (!input.joykeys.down && direction === "down") ;
             if (encounterHelper && encounterHelper.getHasEncounter() && direction === "up") {
                 return;
+            }
+            if (encounterHelper && encounterHelper.getHasStore()) {
+                encounterHelper.setHasStore(false);
             }
 
             var collides = false;
@@ -6613,60 +6797,74 @@
                 if (map[newTy][newTx] >= 100) {
                     collides = true;
                     personEncounterRandom(newTy, newTx);
+                    setHasStore(map[newTy][newTx]);
                 }
                 else if ((newTx - 1) >= 0 && map[newTy][newTx - 1] >= 100 && (northSouth === false) && currDirection === 'W') {
                     collides = true;
                     personEncounterRandom(newTy, newTx - 1);
+                    setHasStore(map[newTy][newTx - 1]);
                 } else if ((newTx + 1) < map.length && map[newTy][newTx + 1] >= 100 && (northSouth === false) && currDirection === 'E') {
                     collides = true;
                     personEncounterRandom(newTy, newTx + 1);
+                    setHasStore(map[newTy][newTx + 1]);
                 } else if ((newTy - 1) >= 0 && map[newTy - 1][newTx] >= 100 && (northSouth === true) && currDirection === 'N') {
                     collides = true;
                     personEncounterRandom(newTy - 1, newTx);
+                    setHasStore(map[newTy - 1][newTx]);
                 } else if ((newTy + 1) < map.length && map[newTy + 1][newTx] >= 100 && (northSouth === true) && currDirection === 'S') {
                     collides = true;
                     personEncounterRandom(newTy + 1, newTx);
+                    setHasStore(map[newTy + 1][newTx]);
                 }
             } else if (isUp === true && !collides) {
                 if (map[newTy][newTx] >= 100) {
                     collides = true;
                     personEncounterRandom(newTy, newTx);
                     //onMove(position, newTy, newTx);
+                    setHasStore(map[newTy][newTx]);
                 }
                 else if ((newTx - 1) >= 0 && map[newTy][newTx - 1] >= 100 && (northSouth === false) && currDirection === 'W') {
                     collides = true;
                     personEncounterRandom(newTy, newTx - 1);
                     onMove(position, newTy, newTx);
+                    setHasStore(map[newTy][newTx - 1]);
                 } else if ((newTx + 1) < map.length && map[newTy][newTx + 1] >= 100 && (northSouth === false) && currDirection === 'E') {
                     collides = true;
                     personEncounterRandom(newTy, newTx + 1);
                     onMove(position, newTy, newTx);
+                    setHasStore(map[newTy][newTx + 1]);
                 } else if ((newTy - 1) >= 0 && map[newTy - 1][newTx] >= 100 && (northSouth === true) && currDirection === 'N') {
                     collides = true;
                     personEncounterRandom(newTy - 1, newTx);
                     onMove(position, newTy, newTx);
+                    setHasStore(map[newTy - 1][newTx]);
                 } else if ((newTy + 1) < map.length && map[newTy + 1][newTx] >= 100 && (northSouth === true) && currDirection === 'S') {
                     collides = true;
                     personEncounterRandom(newTy + 1, newTx);
                     onMove(position, newTy, newTx);
+                    setHasStore(map[newTy + 1][newTx]);
                 }
             } else if (!collides) {
                 if ((newTx - 1) >= 0 && map[newTy][newTx - 1] >= 100 && (northSouth === false) && currDirection === 'W') {
                     collides = true;
                     personEncounterRandom(newTy, newTx - 1);
                     onMove(position, newTy, newTx);
+                    setHasStore(map[newTy][newTx - 1]);
                 } else if ((newTx + 1) < map.length && map[newTy][newTx + 1] >= 100 && (northSouth === false) && currDirection === 'E') {
                     collides = true;
                     personEncounterRandom(newTy, newTx + 1);
                     onMove(position, newTy, newTx);
+                    setHasStore(map[newTy][newTx + 1]);
                 } else if ((newTy - 1) >= 0 && map[newTy - 1][newTx] >= 100 && (northSouth === true) && currDirection === 'N') {
                     collides = true;
                     personEncounterRandom(newTy - 1, newTx);
                     onMove(position, newTy, newTx);
+                    setHasStore(map[newTy - 1][newTx]);
                 } else if ((newTy + 1) < map.length && map[newTy + 1][newTx] >= 100 && (northSouth === true) && currDirection === 'S') {
                     collides = true;
                     personEncounterRandom(newTy + 1, newTx);
                     onMove(position, newTy, newTx);
+                    setHasStore(map[newTy + 1][newTx]);
                 }
             }
 
@@ -6866,8 +7064,10 @@
             }
 
             if (hasEncounter === false) {
-                encounterHelper = new EncounterHelper();
-                encounterHelper.setHasEncounter(false);
+                if (!encounterHelper || !encounterHelper.getHasStore()) {
+                    encounterHelper = new EncounterHelper();
+                    encounterHelper.setHasEncounter(false);
+                }
             }
 
             camera.rotation.y = rotation;

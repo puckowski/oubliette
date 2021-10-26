@@ -4,8 +4,17 @@ export class PlayerInventory {
         this.MODE_USE = 0;
         this.MODE_DROP = 1;
         this.MODE_INSPECT = 2;
+        this.MODE_SELL = 3;
 
         this.mode = this.MODE_USE;
+    }
+
+    isSellMode() {
+        return this.mode === this.MODE_SELL;
+    }
+
+    setSellMode() {
+        this.mode = this.MODE_SELL;
     }
 
     isInspectMode() {
@@ -33,6 +42,14 @@ export class PlayerInventory {
     }
 
     useItem(player, item, soundHelper, audioListener, audioLoader, soundMap, soundObj) {
+        if (this.isSellMode()) {
+            soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'coin');
+
+            player.setCoins(player.getCoins() + item.getCoins());
+
+            return;
+        }
+
         const newAttack = player.getAttack() + item.getAttackBuff();
         const newHealth = player.getHealth() + item.getHealth();
         const newDefence = player.getDefence() + item.getDefenceBuff();

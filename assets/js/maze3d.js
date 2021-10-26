@@ -34,7 +34,7 @@ import { QuestHelper } from "./quest-helper.js";
         [2, 'assets/sound/forest_theme.mp3'],
         [3, 'assets/sound/axagon_theme.mp3'],
         [4, 'assets/sound/dungeon_theme.mp3'],
-        [5, 'assets/sound/town_theme.mp3'],
+        [5, 'assets/sound/forest_theme_2.mp3'],
         [6, 'assets/sound/dungeon_theme.mp3'],
         [7, 'assets/sound/forest_theme.mp3'],
         [8, 'assets/sound/battle_theme.mp3'],
@@ -654,11 +654,20 @@ import { QuestHelper } from "./quest-helper.js";
                 dialog: {
                     100: 0,
                     105: 3,
-                    107: 0
+                    107: 0,
+                    111: 0
                 },
                 dialogMax: {
                     105: 2
                 },
+                111: [
+                    {
+                        question: 'Be careful in the Freiyan Forest, adventurer. There are many orcs.',
+                        okCallback: () => {
+
+                        }
+                    }
+                ],
                 107: [
                     {
                         question: 'Greetings adventurer! Would you like to buy a fine gambeson?',
@@ -1134,6 +1143,24 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 109: {
                         const wallObj = wallMap.get('woman_4');
+                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        wall.position.set(position.x, position.y, position.z);
+                        scene.add(wall);
+                        planeList.push(wall);
+
+                        break;
+                    }
+                    case 110: {
+                        const wallObj = wallMap.get('man_6');
+                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        wall.position.set(position.x, position.y, position.z);
+                        scene.add(wall);
+                        planeList.push(wall);
+
+                        break;
+                    }
+                    case 111: {
+                        const wallObj = wallMap.get('guard_1');
                         const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
@@ -2184,6 +2211,29 @@ import { QuestHelper } from "./quest-helper.js";
                         player.removeItem(index);
 
                         soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'drop');
+                    } else if (playerInventory.isSellMode() === true) {
+                        const reloadInv = playerInventory.useItem(player, item, soundHelper, audioListener, audioLoader, soundMap, {
+                            listener: audioListener,
+                            loader: audioLoader,
+                            map: soundMap,
+                            helper: soundHelper
+                        });
+
+                        invItemsEle.removeChild(parentItem);
+
+                        removedItemSet.forEach(removedIndex => {
+                            if (removedIndex < index) {
+                                index--;
+                            }
+                        });
+
+                        player.removeItem(index);
+                        removedItemSet.push(index);
+
+                        if (reloadInv) {
+                            showInventory();
+                            showInventory();
+                        }
                     }
                 };
             });
@@ -2191,6 +2241,22 @@ import { QuestHelper } from "./quest-helper.js";
             const useButton = document.getElementById('inventoryUseBtn');
             const dropButton = document.getElementById('inventoryDropBtn');
             const inspectButton = document.getElementById('inventoryInspectBtn');
+            const sellButton = document.getElementById('inventorySellBtn');
+
+            if (encounterHelper && encounterHelper.getHasStore()) {
+                sellButton.removeAttribute('hidden');
+
+                sellButton.onclick = () => {
+                    playerInventory.setSellMode();
+
+                    useButton.style.border = '3px outset rgba(202,202,202,0.29)';
+                    dropButton.style.border = '3px outset rgba(202,202,202,0.29)';
+                    inspectButton.style.border = '3px outset rgba(202,202,202,0.29)';
+                    sellButton.style.border = '3px outset rgba(255,255,255,1)';
+                };
+            } else {
+                sellButton.setAttribute('hidden', true);
+            }
 
             useButton.onclick = () => {
                 playerInventory.setUseMode();
@@ -2198,6 +2264,7 @@ import { QuestHelper } from "./quest-helper.js";
                 useButton.style.border = '3px outset rgba(255,255,255,1)';
                 dropButton.style.border = '3px outset rgba(202,202,202,0.29)';
                 inspectButton.style.border = '3px outset rgba(202,202,202,0.29)';
+                sellButton.style.border = '3px outset rgba(202,202,202,0.29)';
             };
             dropButton.onclick = () => {
                 playerInventory.setDropMode();
@@ -2205,6 +2272,7 @@ import { QuestHelper } from "./quest-helper.js";
                 dropButton.style.border = '3px outset rgba(255,255,255,1)';
                 useButton.style.border = '3px outset rgba(202,202,202,0.29)';
                 inspectButton.style.border = '3px outset rgba(202,202,202,0.29)';
+                sellButton.style.border = '3px outset rgba(202,202,202,0.29)';
             };
             inspectButton.onclick = () => {
                 playerInventory.setInspectMode();
@@ -2212,14 +2280,19 @@ import { QuestHelper } from "./quest-helper.js";
                 inspectButton.style.border = '3px outset rgba(255,255,255,1)';
                 dropButton.style.border = '3px outset rgba(202,202,202,0.29)';
                 useButton.style.border = '3px outset rgba(202,202,202,0.29)';
+                sellButton.style.border = '3px outset rgba(202,202,202,0.29)';
             }
 
             if (playerInventory.isUseMode() === true) {
                 useButton.style.border = '3px outset rgba(255,255,255,1)';
                 dropButton.style.border = '3px outset rgba(202,202,202,0.29)';
+                sellButton.style.border = '3px outset rgba(202,202,202,0.29)';
+                inspectButton.style.border = '3px outset rgba(202,202,202,0.29)';
             } else {
                 dropButton.style.border = '3px outset rgba(255,255,255,1)';
                 useButton.style.border = '3px outset rgba(202,202,202,0.29)';
+                sellButton.style.border = '3px outset rgba(202,202,202,0.29)';
+                inspectButton.style.border = '3px outset rgba(202,202,202,0.29)';
             }
         } else {
             invEle.setAttribute('hidden', true);
@@ -2636,6 +2709,7 @@ import { QuestHelper } from "./quest-helper.js";
                 const attackPot = itemMap.get('Attack Potion');
                 const bounty = itemMap.get('Ring of Bounty');
                 const leatherBody = itemMap.get('Leather Body');
+                const bread = itemMap.get('Bread');
                 coins.setCoins(3);
                 book.setRarity(0.7);
                 items.push(leatherBody);
@@ -2659,6 +2733,7 @@ import { QuestHelper } from "./quest-helper.js";
                 items.push(herb1);
                 items.push(herb2);
                 items.push(herb2);
+                items.push(bread);
 
                 monster.setItems(items);
 
@@ -2697,6 +2772,7 @@ import { QuestHelper } from "./quest-helper.js";
                 const attackPot = itemMap.get('Attack Potion');
                 const bounty = itemMap.get('Ring of Bounty');
                 const ironChain = itemMap.get('Iron Chainmail');
+                const bread = itemMap.get('Bread');
                 coins.setCoins(6);
                 items.push(ironChain);
                 items.push(bounty);
@@ -2720,6 +2796,7 @@ import { QuestHelper } from "./quest-helper.js";
                 items.push(herb1);
                 items.push(herb2);
                 items.push(herb2);
+                items.push(bread);
 
                 monster.setItems(items);
 
@@ -2802,6 +2879,7 @@ import { QuestHelper } from "./quest-helper.js";
                 monster.setMaxDebuff(4);
 
                 let items = [];
+                const herbtome = itemMap.get('Tome of Herblaw');
                 const herb1 = itemMap.get('Forthul Herb');
                 const herb2 = itemMap.get('Brawa Herb');
                 const beer = itemMap.get('Mug of Beer');
@@ -2842,6 +2920,7 @@ import { QuestHelper } from "./quest-helper.js";
                 items.push(herb1);
                 items.push(herb2);
                 items.push(herb2);
+                items.push(herbtome);
 
                 monster.setItems(items);
 
@@ -2913,6 +2992,7 @@ import { QuestHelper } from "./quest-helper.js";
                 monster.setMaxDebuff(4);
 
                 let items = [];
+                const herbtome = itemMap.get('Tome of Herblaw');
                 const herb1 = itemMap.get('Amaryx Herb');
                 const beer = itemMap.get('Glass of Beer');
                 const liver = itemMap.get('Liver');
@@ -2945,6 +3025,7 @@ import { QuestHelper } from "./quest-helper.js";
                 items.push(wisdomStaff);
                 items.push(herb1);
                 items.push(herb1);
+                items.push(herbtome);
 
                 monster.setItems(items);
 
@@ -2969,6 +3050,7 @@ import { QuestHelper } from "./quest-helper.js";
                 monster.setMaxDebuff(3);
 
                 let items = [];
+                const herbtome = itemMap.get('Tome of Herblaw');
                 const herb1 = itemMap.get('Drosdt Herb');
                 const herb2 = itemMap.get('Brawa Herb');
                 const beer = itemMap.get('Mug of Beer');
@@ -3008,6 +3090,7 @@ import { QuestHelper } from "./quest-helper.js";
                 items.push(herb1);
                 items.push(herb2);
                 items.push(herb2);
+                items.push(herbtome);
 
                 monster.setItems(items);
 
@@ -3032,6 +3115,7 @@ import { QuestHelper } from "./quest-helper.js";
                 monster.setMaxDebuff(3);
 
                 let items = [];
+                const herbtome = itemMap.get('Tome of Herblaw');
                 const herb1 = itemMap.get('Greelyn Herb');
                 const beer = itemMap.get('Mug of Beer');
                 const meat = itemMap.get('Meat');
@@ -3071,6 +3155,7 @@ import { QuestHelper } from "./quest-helper.js";
                 items.push(shield1);
                 items.push(herb1);
                 items.push(herb1);
+                items.push(herbtome);
 
                 monster.setItems(items);
 
@@ -3095,6 +3180,7 @@ import { QuestHelper } from "./quest-helper.js";
                 monster.setMaxDebuff(3);
 
                 let items = [];
+                const herbtome = itemMap.get('Tome of Herblaw');
                 const herb1 = itemMap.get('Runlyf Herb');
                 const herb2 = itemMap.get('Brawa Herb');
                 const beer = itemMap.get('Mug of Beer');
@@ -3142,6 +3228,7 @@ import { QuestHelper } from "./quest-helper.js";
                 items.push(herb1);
                 items.push(herb2);
                 items.push(herb2);
+                items.push(herbtome);
 
                 monster.setItems(items);
 
@@ -3179,6 +3266,7 @@ import { QuestHelper } from "./quest-helper.js";
                 const attackPot = itemMap.get('Attack Potion');
                 const bounty = itemMap.get('Ring of Bounty');
                 const ironChain = itemMap.get('Iron Chainmail');
+                const bread = itemMap.get('Bread');
                 coins.setCoins(6);
                 items.push(ironChain);
                 items.push(bounty);
@@ -3201,6 +3289,8 @@ import { QuestHelper } from "./quest-helper.js";
                 items.push(attackPot);
                 items.push(herb1);
                 items.push(herb1);
+                items.push(bread);
+                items.push(bread);
 
                 monster.setItems(items);
 
@@ -3225,6 +3315,7 @@ import { QuestHelper } from "./quest-helper.js";
                 monster.setMaxDebuff(2);
 
                 let items = [];
+                const bread = itemMap.get('Bread');
                 const herb1 = itemMap.get('Amaryx Herb');
                 const beer = itemMap.get('Glass of Beer');
                 const liver = itemMap.get('Liver');
@@ -3260,6 +3351,8 @@ import { QuestHelper } from "./quest-helper.js";
                 items.push(attackPot);
                 items.push(herb1);
                 items.push(herb1);
+                items.push(bread);
+                items.push(bread);
 
                 monster.setItems(items);
 
@@ -3280,6 +3373,15 @@ import { QuestHelper } from "./quest-helper.js";
         }
 
         return monster;
+    }
+
+    function setHasStore(personCode) {
+        if (personCode === 110) {
+            encounterHelper = new EncounterHelper();
+            encounterHelper.setHasStore(true);
+        } else if (personCode !== 110 && encounterHelper) {
+            encounterHelper.setHasStore(false);
+        }
     }
 
     function personEncounterRandom(newTy2, newTx2) {
@@ -3408,6 +3510,9 @@ import { QuestHelper } from "./quest-helper.js";
         }
         if (encounterHelper && encounterHelper.getHasEncounter() && direction === "up") {
             return;
+        }
+        if (encounterHelper && encounterHelper.getHasStore()) {
+            encounterHelper.setHasStore(false);
         }
 
         var collides = false;
@@ -3580,60 +3685,74 @@ import { QuestHelper } from "./quest-helper.js";
             if (map[newTy][newTx] >= 100) {
                 collides = true;
                 personEncounterRandom(newTy, newTx);
+                setHasStore(map[newTy][newTx]);
             }
             else if ((newTx - 1) >= 0 && map[newTy][newTx - 1] >= 100 && (northSouth === false) && currDirection === 'W') {
                 collides = true;
                 personEncounterRandom(newTy, newTx - 1);
+                setHasStore(map[newTy][newTx - 1]);
             } else if ((newTx + 1) < map.length && map[newTy][newTx + 1] >= 100 && (northSouth === false) && currDirection === 'E') {
                 collides = true;
                 personEncounterRandom(newTy, newTx + 1);
+                setHasStore(map[newTy][newTx + 1]);
             } else if ((newTy - 1) >= 0 && map[newTy - 1][newTx] >= 100 && (northSouth === true) && currDirection === 'N') {
                 collides = true;
                 personEncounterRandom(newTy - 1, newTx);
+                setHasStore(map[newTy - 1][newTx]);
             } else if ((newTy + 1) < map.length && map[newTy + 1][newTx] >= 100 && (northSouth === true) && currDirection === 'S') {
                 collides = true;
                 personEncounterRandom(newTy + 1, newTx);
+                setHasStore(map[newTy + 1][newTx]);
             }
         } else if (isUp === true && !collides) {
             if (map[newTy][newTx] >= 100) {
                 collides = true;
                 personEncounterRandom(newTy, newTx);
                 //onMove(position, newTy, newTx);
+                setHasStore(map[newTy][newTx]);
             }
             else if ((newTx - 1) >= 0 && map[newTy][newTx - 1] >= 100 && (northSouth === false) && currDirection === 'W') {
                 collides = true;
                 personEncounterRandom(newTy, newTx - 1);
                 onMove(position, newTy, newTx);
+                setHasStore(map[newTy][newTx - 1]);
             } else if ((newTx + 1) < map.length && map[newTy][newTx + 1] >= 100 && (northSouth === false) && currDirection === 'E') {
                 collides = true;
                 personEncounterRandom(newTy, newTx + 1);
                 onMove(position, newTy, newTx);
+                setHasStore(map[newTy][newTx + 1]);
             } else if ((newTy - 1) >= 0 && map[newTy - 1][newTx] >= 100 && (northSouth === true) && currDirection === 'N') {
                 collides = true;
                 personEncounterRandom(newTy - 1, newTx);
                 onMove(position, newTy, newTx);
+                setHasStore(map[newTy - 1][newTx]);
             } else if ((newTy + 1) < map.length && map[newTy + 1][newTx] >= 100 && (northSouth === true) && currDirection === 'S') {
                 collides = true;
                 personEncounterRandom(newTy + 1, newTx);
                 onMove(position, newTy, newTx);
+                setHasStore(map[newTy + 1][newTx]);
             }
         } else if (!collides) {
             if ((newTx - 1) >= 0 && map[newTy][newTx - 1] >= 100 && (northSouth === false) && currDirection === 'W') {
                 collides = true;
                 personEncounterRandom(newTy, newTx - 1);
                 onMove(position, newTy, newTx);
+                setHasStore(map[newTy][newTx - 1]);
             } else if ((newTx + 1) < map.length && map[newTy][newTx + 1] >= 100 && (northSouth === false) && currDirection === 'E') {
                 collides = true;
                 personEncounterRandom(newTy, newTx + 1);
                 onMove(position, newTy, newTx);
+                setHasStore(map[newTy][newTx + 1]);
             } else if ((newTy - 1) >= 0 && map[newTy - 1][newTx] >= 100 && (northSouth === true) && currDirection === 'N') {
                 collides = true;
                 personEncounterRandom(newTy - 1, newTx);
                 onMove(position, newTy, newTx);
+                setHasStore(map[newTy - 1][newTx]);
             } else if ((newTy + 1) < map.length && map[newTy + 1][newTx] >= 100 && (northSouth === true) && currDirection === 'S') {
                 collides = true;
                 personEncounterRandom(newTy + 1, newTx);
                 onMove(position, newTy, newTx);
+                setHasStore(map[newTy + 1][newTx]);
             }
         }
 
@@ -3833,8 +3952,10 @@ import { QuestHelper } from "./quest-helper.js";
         }
 
         if (hasEncounter === false) {
-            encounterHelper = new EncounterHelper();
-            encounterHelper.setHasEncounter(false);
+            if (!encounterHelper || !encounterHelper.getHasStore()) {
+                encounterHelper = new EncounterHelper();
+                encounterHelper.setHasEncounter(false);
+            }
         }
 
         camera.rotation.y = rotation;

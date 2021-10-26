@@ -884,5 +884,32 @@ export class ItemHelper {
             return true;
         });
         itemMap.set(gameItem67.getName(), gameItem67);
+
+        let gameItem68 = new GameItem('Tome of Herblaw', 'assets/images/sprites/book_8.PNG');
+        gameItem68.setAttackBuff(0);
+        gameItem68.setDefenceBuff(0);
+        gameItem68.setCoins(0);
+        gameItem68.setHealth(0);
+        gameItem68.setMagicBuff(0);
+        gameItem68.setRangeBuff(0);
+        gameItem68.setDescription('A tome which grants experience in herblaw.');
+        gameItem68.setUsable(true);
+        gameItem68.setUseFunction((soundObj) => {            
+            player.boostHerblaw(150);
+
+            return true;
+        });
+        itemMap.set(gameItem68.getName(), gameItem68);
+
+        let gameItem69 = new GameItem('Bread', 'assets/images/sprites/bread_1.png');
+        gameItem69.setAttackBuff(0);
+        gameItem69.setDefenceBuff(0);
+        gameItem69.setCoins(3);
+        gameItem69.setHealth(5);
+        gameItem69.setMagicBuff(0);
+        gameItem69.setRangeBuff(0);
+        gameItem69.setDescription('Some bread.');
+        gameItem69.setUsable(true);
+        itemMap.set(gameItem69.getName(), gameItem69);
     }
 }

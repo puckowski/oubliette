@@ -393,6 +393,32 @@ export class TextureHelper {
         wallTextureMap.set('woman_4', { geometry: animWoman2Geometry, material: animWoman2Material });
         animators.push(animWoman2Animator);
 
+        const animMan2TexturePath =  'assets/images/sprites/man_5.png';
+        const animMan2Texture = new  THREE.TextureLoader().load(animMan2TexturePath)
+        const animMan2Animator =  new  PlainAnimator(animMan2Texture, 5, 2, 10, 10);
+        const animMan2TextureFinal = animMan2Animator.init();  
+
+        const animMan2Geometry = new THREE.PlaneGeometry(80, 80);
+        const animMan2Material = new THREE.MeshBasicMaterial({
+            map: animMan2TextureFinal,
+            transparent: true
+        });
+        wallTextureMap.set('man_6', { geometry: animMan2Geometry, material: animMan2Material });
+        animators.push(animMan2Animator);
+
+        const animMan3TexturePath =  'assets/images/sprites/guard_1.png';
+        const animMan3Texture = new  THREE.TextureLoader().load(animMan3TexturePath)
+        const animMan3Animator =  new  PlainAnimator(animMan3Texture, 10, 1, 10, 10);
+        const animMan3TextureFinal = animMan3Animator.init();  
+
+        const animMan3Geometry = new THREE.PlaneGeometry(80, 100);
+        const animMan3Material = new THREE.MeshBasicMaterial({
+            map: animMan3TextureFinal,
+            transparent: true
+        });
+        wallTextureMap.set('guard_1', { geometry: animMan3Geometry, material: animMan3Material });
+        animators.push(animMan3Animator);
+
         const accentGeometry = new THREE.PlaneGeometry(50, 50);
         const bush1Material = new THREE.MeshBasicMaterial({
             map: loader.load('assets/images/textures/bush_1.png'),

@@ -7,9 +7,18 @@ export class EncounterHelper {
         this.y = null;
         this.healthBar = document.createElement('canvas');
         this.healthBarContext = this.healthBar.getContext('2d');
+        this.hasStore = false;
 
         //
         this.updateHealthBarPosition();
+    }
+
+    setHasStore(hasStore) {
+        this.hasStore = hasStore;
+    }
+
+    getHasStore() {
+        return this.hasStore;
     }
 
     fillHealthBar() {
