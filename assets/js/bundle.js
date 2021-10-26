@@ -1870,14 +1870,14 @@
             gameItem11.setUsable(true);
             itemMap.set(gameItem11.getName(), gameItem11);
 
-            let gameItem12 = new GameItem('Liver', 'assets/images/sprites/meat_2.png');
+            let gameItem12 = new GameItem('Raw Meat', 'assets/images/sprites/meat_2.png');
             gameItem12.setAttackBuff(0);
             gameItem12.setDefenceBuff(0);
             gameItem12.setCoins(3);
             gameItem12.setHealth(5);
             gameItem12.setMagicBuff(0);
             gameItem12.setRangeBuff(0);
-            gameItem12.setDescription('A liver.');
+            gameItem12.setDescription('Some raw meat.');
             gameItem12.setUsable(true);
             itemMap.set(gameItem12.getName(), gameItem12);
 
@@ -2367,14 +2367,14 @@
             gameItem56.setArmorBonus(2);
             itemMap.set(gameItem56.getName(), gameItem56);
 
-            let gameItem57 = new GameItem('Chicken', 'assets/images/sprites/meat_3.png');
+            let gameItem57 = new GameItem('Ham', 'assets/images/sprites/meat_3.png');
             gameItem57.setAttackBuff(0);
             gameItem57.setDefenceBuff(0);
             gameItem57.setCoins(3);
             gameItem57.setHealth(5);
             gameItem57.setMagicBuff(0);
             gameItem57.setRangeBuff(0);
-            gameItem57.setDescription('Some chicken.');
+            gameItem57.setDescription('Some ham.');
             gameItem57.setUsable(true);
             itemMap.set(gameItem57.getName(), gameItem57);
 
@@ -2660,6 +2660,17 @@
             gameItem69.setDescription('Some bread.');
             gameItem69.setUsable(true);
             itemMap.set(gameItem69.getName(), gameItem69);
+
+            let gameItem70 = new GameItem('Fish', 'assets/images/sprites/fish_1.png');
+            gameItem70.setAttackBuff(0);
+            gameItem70.setDefenceBuff(0);
+            gameItem70.setCoins(4);
+            gameItem70.setHealth(6);
+            gameItem70.setMagicBuff(0);
+            gameItem70.setRangeBuff(0);
+            gameItem70.setDescription('Some cooked fish.');
+            gameItem70.setUsable(true);
+            itemMap.set(gameItem70.getName(), gameItem70);
         }
     }
 
@@ -5935,6 +5946,7 @@
                     monster.setMaxDebuff(3);
 
                     let items = [];
+                    const fish = itemMap.get('Fish');
                     const herb1 = itemMap.get('Greelyn Herb');
                     const beer = itemMap.get('Mug of Beer');
                     const meat = itemMap.get('Meat');
@@ -5969,6 +5981,7 @@
                     items.push(mace);
                     items.push(herb1);
                     items.push(herb1);
+                    items.push(fish);
 
                     monster.setItems(items);
 
@@ -5993,6 +6006,7 @@
                     monster.setMaxDebuff(4);
 
                     let items = [];
+                    const fish = itemMap.get('Fish');
                     const herbtome = itemMap.get('Tome of Herblaw');
                     const herb1 = itemMap.get('Forthul Herb');
                     const herb2 = itemMap.get('Brawa Herb');
@@ -6035,6 +6049,8 @@
                     items.push(herb2);
                     items.push(herb2);
                     items.push(herbtome);
+                    items.push(fish);
+                    items.push(fish);
 
                     monster.setItems(items);
 
@@ -6367,6 +6383,7 @@
                     monster.setMaxDebuff(2);
 
                     let items = [];
+                    const fish = itemMap.get('Fish');
                     const herb1 = itemMap.get('Amaryx Herb');
                     const beer = itemMap.get('Glass of Beer');
                     const liver = itemMap.get('Liver');
@@ -6405,6 +6422,7 @@
                     items.push(herb1);
                     items.push(bread);
                     items.push(bread);
+                    items.push(fish);
 
                     monster.setItems(items);
 
@@ -6429,6 +6447,7 @@
                     monster.setMaxDebuff(2);
 
                     let items = [];
+                    const fish = itemMap.get('Fish');
                     const bread = itemMap.get('Bread');
                     const herb1 = itemMap.get('Amaryx Herb');
                     const beer = itemMap.get('Glass of Beer');
@@ -6467,6 +6486,7 @@
                     items.push(herb1);
                     items.push(bread);
                     items.push(bread);
+                    items.push(fish);
 
                     monster.setItems(items);
 

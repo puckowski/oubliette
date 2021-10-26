@@ -2821,6 +2821,7 @@ import { QuestHelper } from "./quest-helper.js";
                 monster.setMaxDebuff(3);
 
                 let items = [];
+                const fish = itemMap.get('Fish');
                 const herb1 = itemMap.get('Greelyn Herb');
                 const beer = itemMap.get('Mug of Beer');
                 const meat = itemMap.get('Meat');
@@ -2855,6 +2856,7 @@ import { QuestHelper } from "./quest-helper.js";
                 items.push(mace);
                 items.push(herb1);
                 items.push(herb1);
+                items.push(fish);
 
                 monster.setItems(items);
 
@@ -2879,6 +2881,7 @@ import { QuestHelper } from "./quest-helper.js";
                 monster.setMaxDebuff(4);
 
                 let items = [];
+                const fish = itemMap.get('Fish');
                 const herbtome = itemMap.get('Tome of Herblaw');
                 const herb1 = itemMap.get('Forthul Herb');
                 const herb2 = itemMap.get('Brawa Herb');
@@ -2921,6 +2924,8 @@ import { QuestHelper } from "./quest-helper.js";
                 items.push(herb2);
                 items.push(herb2);
                 items.push(herbtome);
+                items.push(fish);
+                items.push(fish);
 
                 monster.setItems(items);
 
@@ -3253,6 +3258,7 @@ import { QuestHelper } from "./quest-helper.js";
                 monster.setMaxDebuff(2);
 
                 let items = [];
+                const fish = itemMap.get('Fish');
                 const herb1 = itemMap.get('Amaryx Herb');
                 const beer = itemMap.get('Glass of Beer');
                 const liver = itemMap.get('Liver');
@@ -3291,6 +3297,7 @@ import { QuestHelper } from "./quest-helper.js";
                 items.push(herb1);
                 items.push(bread);
                 items.push(bread);
+                items.push(fish);
 
                 monster.setItems(items);
 
@@ -3315,6 +3322,7 @@ import { QuestHelper } from "./quest-helper.js";
                 monster.setMaxDebuff(2);
 
                 let items = [];
+                const fish = itemMap.get('Fish');
                 const bread = itemMap.get('Bread');
                 const herb1 = itemMap.get('Amaryx Herb');
                 const beer = itemMap.get('Glass of Beer');
@@ -3353,6 +3361,7 @@ import { QuestHelper } from "./quest-helper.js";
                 items.push(herb1);
                 items.push(bread);
                 items.push(bread);
+                items.push(fish);
 
                 monster.setItems(items);
 
