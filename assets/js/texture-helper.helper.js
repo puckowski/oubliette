@@ -393,9 +393,9 @@ export class TextureHelper {
         wallTextureMap.set('woman_4', { geometry: animWoman2Geometry, material: animWoman2Material });
         animators.push(animWoman2Animator);
 
-        const animMan2TexturePath =  'assets/images/sprites/man_5.png';
+        const animMan2TexturePath =  'assets/images/sprites/man_6.png';
         const animMan2Texture = new  THREE.TextureLoader().load(animMan2TexturePath)
-        const animMan2Animator =  new  PlainAnimator(animMan2Texture, 5, 2, 10, 10);
+        const animMan2Animator =  new  PlainAnimator(animMan2Texture, 10, 1, 10, 10);
         const animMan2TextureFinal = animMan2Animator.init();  
 
         const animMan2Geometry = new THREE.PlaneGeometry(80, 80);

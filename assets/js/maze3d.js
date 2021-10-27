@@ -655,11 +655,20 @@ import { QuestHelper } from "./quest-helper.js";
                     100: 0,
                     105: 3,
                     107: 0,
-                    111: 0
+                    111: 0,
+                    110: 0
                 },
                 dialogMax: {
                     105: 2
                 },
+                110: [
+                    {
+                        question: 'Hello adeventurer. I buy all sorts of goods and then sell them in foreign lands.',
+                        okCallback: () => {
+
+                        }
+                    }
+                ],
                 111: [
                     {
                         question: 'Be careful in the Freiyan Forest, adventurer. There are many orcs.',
