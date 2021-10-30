@@ -135,8 +135,17 @@ import { QuestHelper } from "./quest-helper.js";
                 100: 0,
                 104: 0,
                 105: 0,
-                108: 0
+                108: 0,
+                110: 0
             },
+            110: [
+                {
+                    question: 'Hello adventurer, do you have anything you would like to sell to me?',
+                    okCallback: () => {
+
+                    }
+                }
+            ],
             101: [
                 {
                     question: 'Brave adventurer, will you help our city and slay the Dragon?',
@@ -1085,6 +1094,13 @@ import { QuestHelper } from "./quest-helper.js";
                         scene.add(wall);
                         planeList.push(wall);
 
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
+
                         break;
                     }
                     case 101: {
@@ -1093,6 +1109,13 @@ import { QuestHelper } from "./quest-helper.js";
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
                         planeList.push(wall);
+
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
 
                         break;
                     }
@@ -1103,6 +1126,13 @@ import { QuestHelper } from "./quest-helper.js";
                         scene.add(wall);
                         planeList.push(wall);
 
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
+
                         break;
                     }
                     case 104: {
@@ -1111,6 +1141,13 @@ import { QuestHelper } from "./quest-helper.js";
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
                         planeList.push(wall);
+
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
 
                         break;
                     }
@@ -1121,6 +1158,13 @@ import { QuestHelper } from "./quest-helper.js";
                         scene.add(wall);
                         planeList.push(wall);
 
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
+
                         break;
                     }
                     case 106: {
@@ -1129,6 +1173,13 @@ import { QuestHelper } from "./quest-helper.js";
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
                         planeList.push(wall);
+
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
 
                         break;
                     }
@@ -1139,6 +1190,13 @@ import { QuestHelper } from "./quest-helper.js";
                         scene.add(wall);
                         planeList.push(wall);
 
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
+
                         break;
                     }
                     case 108: {
@@ -1147,6 +1205,13 @@ import { QuestHelper } from "./quest-helper.js";
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
                         planeList.push(wall);
+
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
 
                         break;
                     }
@@ -1157,6 +1222,13 @@ import { QuestHelper } from "./quest-helper.js";
                         scene.add(wall);
                         planeList.push(wall);
 
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
+
                         break;
                     }
                     case 110: {
@@ -1166,6 +1238,13 @@ import { QuestHelper } from "./quest-helper.js";
                         scene.add(wall);
                         planeList.push(wall);
 
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
+
                         break;
                     }
                     case 111: {
@@ -1174,6 +1253,13 @@ import { QuestHelper } from "./quest-helper.js";
                         wall.position.set(position.x, position.y + 5, position.z);
                         scene.add(wall);
                         planeList.push(wall);
+
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
 
                         break;
                     }
@@ -1185,6 +1271,13 @@ import { QuestHelper } from "./quest-helper.js";
                         scene.add(monster);
                         planeList.push(monster);
 
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
+
                         break;
                     }
                     case -2: {
@@ -1194,6 +1287,13 @@ import { QuestHelper } from "./quest-helper.js";
                         monster.name = String(y) + String(x) + '_monster';
                         scene.add(monster);
                         planeList.push(monster);
+
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
 
                         break;
                     }
@@ -1205,6 +1305,13 @@ import { QuestHelper } from "./quest-helper.js";
                         scene.add(monster);
                         planeList.push(monster);
 
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
+
                         break;
                     }
                     case -4: {
@@ -1214,6 +1321,13 @@ import { QuestHelper } from "./quest-helper.js";
                         monster.name = String(y) + String(x) + '_monster';
                         scene.add(monster);
                         planeList.push(monster);
+
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
 
                         break;
                     }
@@ -1225,6 +1339,13 @@ import { QuestHelper } from "./quest-helper.js";
                         scene.add(monster);
                         planeList.push(monster);
 
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
+
                         break;
                     }
                     case -6: {
@@ -1234,6 +1355,13 @@ import { QuestHelper } from "./quest-helper.js";
                         monster.name = String(y) + String(x) + '_monster';
                         scene.add(monster);
                         planeList.push(monster);
+
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
 
                         break;
                     }
@@ -1245,6 +1373,13 @@ import { QuestHelper } from "./quest-helper.js";
                         scene.add(monster);
                         planeList.push(monster);
 
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
+
                         break;
                     }
                     case -8: {
@@ -1254,6 +1389,13 @@ import { QuestHelper } from "./quest-helper.js";
                         monster.name = String(y) + String(x) + '_monster';
                         scene.add(monster);
                         planeList.push(monster);
+
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
 
                         break;
                     }
@@ -1265,6 +1407,13 @@ import { QuestHelper } from "./quest-helper.js";
                         scene.add(monster);
                         planeList.push(monster);
 
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
+
                         break;
                     }
                     case -10: {
@@ -1274,6 +1423,13 @@ import { QuestHelper } from "./quest-helper.js";
                         monster.name = String(y) + String(x) + '_monster';
                         scene.add(monster);
                         planeList.push(monster);
+
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
 
                         break;
                     }
@@ -1285,6 +1441,13 @@ import { QuestHelper } from "./quest-helper.js";
                         scene.add(monster);
                         planeList.push(monster);
 
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
+
                         break;
                     }
                     case -12: {
@@ -1294,6 +1457,13 @@ import { QuestHelper } from "./quest-helper.js";
                         monster.name = String(y) + String(x) + '_monster';
                         scene.add(monster);
                         planeList.push(monster);
+
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
 
                         break;
                     }
@@ -1473,7 +1643,7 @@ import { QuestHelper } from "./quest-helper.js";
                         break;
                     }
                     case 20: {
-                        const roofObj = wallMap.get('roof_2');
+                        const roofObj = wallMap.get('roof_3');
                         const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                         roof.position.set(position.x, position.y + 100, position.z);
                         scene.add(roof);
@@ -1533,6 +1703,13 @@ import { QuestHelper } from "./quest-helper.js";
                         scene.add(wall);
                         planeList.push(wall);
 
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
+
                         break;
                     }
                     case 5: {
@@ -1545,6 +1722,13 @@ import { QuestHelper } from "./quest-helper.js";
                         }
                         scene.add(wall);
                         planeList.push(wall);
+
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
 
                         break;
                     }
@@ -1634,6 +1818,13 @@ import { QuestHelper } from "./quest-helper.js";
                         scene.add(wall);
                         planeList.push(wall);
 
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
+
                         break;
                     }
                     case 12: {
@@ -1708,6 +1899,13 @@ import { QuestHelper } from "./quest-helper.js";
                     const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
+
+                    if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                        const roofObj = wallMap.get('roof_3');
+                        const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                        roof.position.set(position.x, position.y + 100, position.z);
+                        scene.add(roof);
+                    }
                 }
 
                 if (map[y][x] === 'D' && ((saveData === undefined || saveData === null) || isFirstUpdate === false)) {
@@ -2458,26 +2656,27 @@ import { QuestHelper } from "./quest-helper.js";
             const statusbar = document.getElementById('statusbar');
             const dialog = document.getElementById('dialog');
             const welcome = document.getElementById('welcome');
-            if (window.innerHeight < 480 || window.innerWidth < 540) {
-                statusbar.style.fontSize = '0.8rem';
-                dialog.style.fontSize = '0.7rem';
-                welcome.style.fontSize = '1.1rem';
-
-                if (window.innerWidth < 540) {
-                    const controlItemList = document.querySelectorAll('.div-control-item');
-                    for (let i = 0; i < controlItemList.length; ++i) {
-                        controlItemList[i].classList.add('div-control-item-narrow');
-                    }
+            
+            if (window.innerWidth < 740) {
+                const controlItemList = document.querySelectorAll('.div-control-item');
+                for (let i = 0; i < controlItemList.length; ++i) {
+                    controlItemList[i].classList.add('div-control-item-narrow');
                 }
             } else {
-                statusbar.style.fontSize = '1.2rem';
-                dialog.style.fontSize = '1.1rem';
-                welcome.style.fontSize = '2.2rem';
-
                 const controlItemList = document.querySelectorAll('.div-control-item');
                 for (let i = 0; i < controlItemList.length; ++i) {
                     controlItemList[i].classList.remove('div-control-item-narrow');
                 }
+            }
+
+            if (window.innerHeight < 480 || window.innerWidth < 540) {
+                statusbar.style.fontSize = '0.8rem';
+                dialog.style.fontSize = '0.7rem';
+                welcome.style.fontSize = '1.1rem';
+            } else {
+                statusbar.style.fontSize = '1.2rem';
+                dialog.style.fontSize = '1.1rem';
+                welcome.style.fontSize = '2.2rem';
             }
 
             const statusBarEle = document.getElementById('statusbarContainer');
@@ -2488,7 +2687,7 @@ import { QuestHelper } from "./quest-helper.js";
 
             const listOfControls = document.querySelectorAll('.div-control-item');
             const proposedHeight = (9 * oneVh);
-            let proposedWidth = (12.5 * oneVw);
+            let proposedWidth = (11.11 * oneVw);
             if (proposedWidth > proposedHeight) {
                 proposedWidth = proposedHeight;
             }

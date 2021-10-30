@@ -1639,6 +1639,11 @@
             });
             wallTextureMap.set('roof_2', { geometry: wallGeometry, material: roof1Material });
 
+            const roof2Material = new THREE.MeshPhongMaterial({
+                map: loader.load('assets/images/textures/roof_2.jpg')
+            });
+            wallTextureMap.set('roof_3', { geometry: wallGeometry, material: roof2Material });
+
             const forest2Material = new THREE.MeshPhongMaterial({
                 map: loader.load('assets/images/textures/forest_2.png')
             });
@@ -3268,8 +3273,17 @@
                     100: 0,
                     104: 0,
                     105: 0,
-                    108: 0
+                    108: 0,
+                    110: 0
                 },
+                110: [
+                    {
+                        question: 'Hello adventurer, do you have anything you would like to sell to me?',
+                        okCallback: () => {
+
+                        }
+                    }
+                ],
                 101: [
                     {
                         question: 'Brave adventurer, will you help our city and slay the Dragon?',
@@ -4218,6 +4232,13 @@
                             scene.add(wall);
                             planeList.push(wall);
 
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
+
                             break;
                         }
                         case 101: {
@@ -4226,6 +4247,13 @@
                             wall.position.set(position.x, position.y, position.z);
                             scene.add(wall);
                             planeList.push(wall);
+
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
 
                             break;
                         }
@@ -4236,6 +4264,13 @@
                             scene.add(wall);
                             planeList.push(wall);
 
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
+
                             break;
                         }
                         case 104: {
@@ -4244,6 +4279,13 @@
                             wall.position.set(position.x, position.y, position.z);
                             scene.add(wall);
                             planeList.push(wall);
+
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
 
                             break;
                         }
@@ -4254,6 +4296,13 @@
                             scene.add(wall);
                             planeList.push(wall);
 
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
+
                             break;
                         }
                         case 106: {
@@ -4262,6 +4311,13 @@
                             wall.position.set(position.x, position.y, position.z);
                             scene.add(wall);
                             planeList.push(wall);
+
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
 
                             break;
                         }
@@ -4272,6 +4328,13 @@
                             scene.add(wall);
                             planeList.push(wall);
 
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
+
                             break;
                         }
                         case 108: {
@@ -4280,6 +4343,13 @@
                             wall.position.set(position.x, position.y, position.z);
                             scene.add(wall);
                             planeList.push(wall);
+
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
 
                             break;
                         }
@@ -4290,6 +4360,13 @@
                             scene.add(wall);
                             planeList.push(wall);
 
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
+
                             break;
                         }
                         case 110: {
@@ -4299,6 +4376,13 @@
                             scene.add(wall);
                             planeList.push(wall);
 
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
+
                             break;
                         }
                         case 111: {
@@ -4307,6 +4391,13 @@
                             wall.position.set(position.x, position.y + 5, position.z);
                             scene.add(wall);
                             planeList.push(wall);
+
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
 
                             break;
                         }
@@ -4318,6 +4409,13 @@
                             scene.add(monster);
                             planeList.push(monster);
 
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
+
                             break;
                         }
                         case -2: {
@@ -4327,6 +4425,13 @@
                             monster.name = String(y) + String(x) + '_monster';
                             scene.add(monster);
                             planeList.push(monster);
+
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
 
                             break;
                         }
@@ -4338,6 +4443,13 @@
                             scene.add(monster);
                             planeList.push(monster);
 
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
+
                             break;
                         }
                         case -4: {
@@ -4347,6 +4459,13 @@
                             monster.name = String(y) + String(x) + '_monster';
                             scene.add(monster);
                             planeList.push(monster);
+
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
 
                             break;
                         }
@@ -4358,6 +4477,13 @@
                             scene.add(monster);
                             planeList.push(monster);
 
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
+
                             break;
                         }
                         case -6: {
@@ -4367,6 +4493,13 @@
                             monster.name = String(y) + String(x) + '_monster';
                             scene.add(monster);
                             planeList.push(monster);
+
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
 
                             break;
                         }
@@ -4378,6 +4511,13 @@
                             scene.add(monster);
                             planeList.push(monster);
 
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
+
                             break;
                         }
                         case -8: {
@@ -4387,6 +4527,13 @@
                             monster.name = String(y) + String(x) + '_monster';
                             scene.add(monster);
                             planeList.push(monster);
+
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
 
                             break;
                         }
@@ -4398,6 +4545,13 @@
                             scene.add(monster);
                             planeList.push(monster);
 
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
+
                             break;
                         }
                         case -10: {
@@ -4407,6 +4561,13 @@
                             monster.name = String(y) + String(x) + '_monster';
                             scene.add(monster);
                             planeList.push(monster);
+
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
 
                             break;
                         }
@@ -4418,6 +4579,13 @@
                             scene.add(monster);
                             planeList.push(monster);
 
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
+
                             break;
                         }
                         case -12: {
@@ -4427,6 +4595,13 @@
                             monster.name = String(y) + String(x) + '_monster';
                             scene.add(monster);
                             planeList.push(monster);
+
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
 
                             break;
                         }
@@ -4606,7 +4781,7 @@
                             break;
                         }
                         case 20: {
-                            const roofObj = wallMap.get('roof_2');
+                            const roofObj = wallMap.get('roof_3');
                             const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             scene.add(roof);
@@ -4666,6 +4841,13 @@
                             scene.add(wall);
                             planeList.push(wall);
 
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
+
                             break;
                         }
                         case 5: {
@@ -4678,6 +4860,13 @@
                             }
                             scene.add(wall);
                             planeList.push(wall);
+
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
 
                             break;
                         }
@@ -4767,6 +4956,13 @@
                             scene.add(wall);
                             planeList.push(wall);
 
+                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                                const roofObj = wallMap.get('roof_3');
+                                const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                                roof.position.set(position.x, position.y + 100, position.z);
+                                scene.add(roof);
+                            }
+
                             break;
                         }
                         case 12: {
@@ -4841,6 +5037,13 @@
                         const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
+
+                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            const roofObj = wallMap.get('roof_3');
+                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            roof.position.set(position.x, position.y + 100, position.z);
+                            scene.add(roof);
+                        }
                     }
 
                     if (map[y][x] === 'D' && ((saveData === undefined || saveData === null) || isFirstUpdate === false)) {
@@ -5591,26 +5794,27 @@
                 const statusbar = document.getElementById('statusbar');
                 const dialog = document.getElementById('dialog');
                 const welcome = document.getElementById('welcome');
-                if (window.innerHeight < 480 || window.innerWidth < 540) {
-                    statusbar.style.fontSize = '0.8rem';
-                    dialog.style.fontSize = '0.7rem';
-                    welcome.style.fontSize = '1.1rem';
-
-                    if (window.innerWidth < 540) {
-                        const controlItemList = document.querySelectorAll('.div-control-item');
-                        for (let i = 0; i < controlItemList.length; ++i) {
-                            controlItemList[i].classList.add('div-control-item-narrow');
-                        }
+                
+                if (window.innerWidth < 740) {
+                    const controlItemList = document.querySelectorAll('.div-control-item');
+                    for (let i = 0; i < controlItemList.length; ++i) {
+                        controlItemList[i].classList.add('div-control-item-narrow');
                     }
                 } else {
-                    statusbar.style.fontSize = '1.2rem';
-                    dialog.style.fontSize = '1.1rem';
-                    welcome.style.fontSize = '2.2rem';
-
                     const controlItemList = document.querySelectorAll('.div-control-item');
                     for (let i = 0; i < controlItemList.length; ++i) {
                         controlItemList[i].classList.remove('div-control-item-narrow');
                     }
+                }
+
+                if (window.innerHeight < 480 || window.innerWidth < 540) {
+                    statusbar.style.fontSize = '0.8rem';
+                    dialog.style.fontSize = '0.7rem';
+                    welcome.style.fontSize = '1.1rem';
+                } else {
+                    statusbar.style.fontSize = '1.2rem';
+                    dialog.style.fontSize = '1.1rem';
+                    welcome.style.fontSize = '2.2rem';
                 }
 
                 const statusBarEle = document.getElementById('statusbarContainer');
@@ -5621,7 +5825,7 @@
 
                 const listOfControls = document.querySelectorAll('.div-control-item');
                 const proposedHeight = (9 * oneVh);
-                let proposedWidth = (12.5 * oneVw);
+                let proposedWidth = (11.11 * oneVw);
                 if (proposedWidth > proposedHeight) {
                     proposedWidth = proposedHeight;
                 }

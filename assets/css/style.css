@@ -16,7 +16,7 @@ body {
 	vertical-align: middle;
     display: inline-block;
 	height: 9vh;
-	width: 9vh;
+	width: 11.11vw;
 }
 
 .div-control-item-background {
@@ -24,7 +24,7 @@ body {
 }
 
 .div-control-item-narrow {
-	width: 11.11vw !important;
+	width: 100% !important;
 }
 
 .div-control {

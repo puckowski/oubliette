@@ -53,7 +53,7 @@ Oubliette.Gui.MiniMap = function(width, height, parent) {
     }
 
     this.draw = function(x, y, id) {
-        if (id == 1) {
+        if (id == 1 || id === 20) {
             this.ctx.fillStyle = "rgb(230, 230, 230)";
         } else if (id == 'D') {
             this.ctx.fillStyle = "rgb(50, 168, 72)";
