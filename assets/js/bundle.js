@@ -3274,8 +3274,17 @@
                     104: 0,
                     105: 0,
                     108: 0,
-                    110: 0
+                    110: 0,
+                    111: 0
                 },
+                111: [
+                    {
+                        question: 'The great dragon has occupied the Tyhrann Dungeon. Many of its servants are also ahead.',
+                        okCallback: () => {
+
+                        }
+                    }
+                ],
                 110: [
                     {
                         question: 'Hello adventurer, do you have anything you would like to sell to me?',
