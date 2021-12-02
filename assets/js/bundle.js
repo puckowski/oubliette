@@ -6152,7 +6152,7 @@
                     const herb1 = itemMap.get('Thamarin Herb');
                     const herb2 = itemMap.get('Runlyf Herb');
                     const beer = itemMap.get('Glass of Beer');
-                    const liver = itemMap.get('Liver');
+                    const liver = itemMap.get('Raw Meat');
                     const coins = itemMap.get('Coins');
                     const defencePot = itemMap.get('Defence Potion');
                     const rangePot = itemMap.get('Range Potion');
@@ -6391,7 +6391,7 @@
                     const herbtome = itemMap.get('Tome of Herblaw');
                     const herb1 = itemMap.get('Amaryx Herb');
                     const beer = itemMap.get('Glass of Beer');
-                    const liver = itemMap.get('Liver');
+                    const liver = itemMap.get('Raw Meat');
                     const coins = itemMap.get('Coins');
                     const book = itemMap.get('Guard\'s Log');
                     const fireStaff = itemMap.get('Fire Staff');
@@ -6652,7 +6652,7 @@
                     const fish = itemMap.get('Fish');
                     const herb1 = itemMap.get('Amaryx Herb');
                     const beer = itemMap.get('Glass of Beer');
-                    const liver = itemMap.get('Liver');
+                    const liver = itemMap.get('Raw Meat');
                     const coins = itemMap.get('Coins');
                     const defencePot = itemMap.get('Defence Potion');
                     const rangePot = itemMap.get('Range Potion');
@@ -6717,7 +6717,7 @@
                     const bread = itemMap.get('Bread');
                     const herb1 = itemMap.get('Amaryx Herb');
                     const beer = itemMap.get('Glass of Beer');
-                    const liver = itemMap.get('Liver');
+                    const liver = itemMap.get('Raw Meat');
                     const coins = itemMap.get('Coins');
                     const defencePot = itemMap.get('Defence Potion');
                     const rangePot = itemMap.get('Range Potion');
