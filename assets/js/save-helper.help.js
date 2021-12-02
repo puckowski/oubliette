@@ -3,7 +3,7 @@ export class SaveHelper {
         this.lastSaveTime = new Date();
     }
 
-    restore(camera, player, cameraHelper, questHelper) {
+    restore(camera, player, cameraHelper, questHelper, itemMap) {
         const saveStr = localStorage.getItem('save');
         const saveObj = JSON.parse(saveStr);
         const pos = saveObj.position;
@@ -19,7 +19,7 @@ export class SaveHelper {
         cameraHelper.origin.position.mapY = lastPositionSaved.y;
         cameraHelper.origin.position.mapZ = lastPositionSaved.z;
 
-        player.fromJsonObject(saveObj.playerData);
+        player.fromJsonObject(saveObj.playerData, itemMap);
 
         questHelper.restoreFromJson(saveObj.questData);
 

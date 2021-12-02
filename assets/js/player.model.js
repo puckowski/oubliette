@@ -67,7 +67,7 @@ export class Player {
         return player;
     }
 
-    fromJsonObject(player) {
+    fromJsonObject(player, itemMap) {
         this.health = player.health;
         this.healthMax = player.healthMax;
 
@@ -99,6 +99,9 @@ export class Player {
             newGameItem.setRarity(item.rarity);
             newGameItem.setUsable(item.usable);
             newGameItem.setArmorBonus(item.armorBonus);
+
+            const useItem = itemMap.get(item.name);
+            newGameItem.setUseFunction(useItem.getUseFunction());
        
             this.items.push(newGameItem);
         });

@@ -4535,7 +4535,7 @@ import { QuestHelper } from "./quest-helper.js";
 
         const saveState = localStorage.getItem('save');
         if (saveState) {
-            const saveData = saveHelper.restore(camera, player, cameraHelper, questHelper);
+            const saveData = saveHelper.restore(camera, player, cameraHelper, questHelper, itemMap);
             level = saveData.level;
             lastPosition = saveData.pos;
             currDirection = saveData.direction;

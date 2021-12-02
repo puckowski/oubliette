@@ -196,7 +196,7 @@
             return player;
         }
 
-        fromJsonObject(player) {
+        fromJsonObject(player, itemMap) {
             this.health = player.health;
             this.healthMax = player.healthMax;
 
@@ -228,6 +228,9 @@
                 newGameItem.setRarity(item.rarity);
                 newGameItem.setUsable(item.usable);
                 newGameItem.setArmorBonus(item.armorBonus);
+
+                const useItem = itemMap.get(item.name);
+                newGameItem.setUseFunction(useItem.getUseFunction());
            
                 this.items.push(newGameItem);
             });
@@ -2948,7 +2951,7 @@
             this.lastSaveTime = new Date();
         }
 
-        restore(camera, player, cameraHelper, questHelper) {
+        restore(camera, player, cameraHelper, questHelper, itemMap) {
             const saveStr = localStorage.getItem('save');
             const saveObj = JSON.parse(saveStr);
             const pos = saveObj.position;
@@ -2964,7 +2967,7 @@
             cameraHelper.origin.position.mapY = lastPositionSaved.y;
             cameraHelper.origin.position.mapZ = lastPositionSaved.z;
 
-            player.fromJsonObject(saveObj.playerData);
+            player.fromJsonObject(saveObj.playerData, itemMap);
 
             questHelper.restoreFromJson(saveObj.questData);
 
@@ -7669,7 +7672,7 @@
 
             const saveState = localStorage.getItem('save');
             if (saveState) {
-                const saveData = saveHelper.restore(camera, player, cameraHelper, questHelper);
+                const saveData = saveHelper.restore(camera, player, cameraHelper, questHelper, itemMap);
                 level = saveData.level;
                 lastPosition = saveData.pos;
                 currDirection = saveData.direction;
