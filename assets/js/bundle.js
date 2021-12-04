@@ -4244,7 +4244,8 @@
                             scene.add(wall);
                             planeList.push(wall);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -4260,7 +4261,8 @@
                             scene.add(wall);
                             planeList.push(wall);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -4276,7 +4278,8 @@
                             scene.add(wall);
                             planeList.push(wall);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -4292,7 +4295,8 @@
                             scene.add(wall);
                             planeList.push(wall);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -4308,7 +4312,8 @@
                             scene.add(wall);
                             planeList.push(wall);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -4324,7 +4329,8 @@
                             scene.add(wall);
                             planeList.push(wall);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -4340,7 +4346,8 @@
                             scene.add(wall);
                             planeList.push(wall);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -4356,7 +4363,8 @@
                             scene.add(wall);
                             planeList.push(wall);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -4372,7 +4380,8 @@
                             scene.add(wall);
                             planeList.push(wall);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -4388,7 +4397,8 @@
                             scene.add(wall);
                             planeList.push(wall);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -4404,7 +4414,8 @@
                             scene.add(wall);
                             planeList.push(wall);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -4421,7 +4432,8 @@
                             scene.add(monster);
                             planeList.push(monster);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -4438,7 +4450,8 @@
                             scene.add(monster);
                             planeList.push(monster);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -4455,7 +4468,8 @@
                             scene.add(monster);
                             planeList.push(monster);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -4472,7 +4486,8 @@
                             scene.add(monster);
                             planeList.push(monster);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -4489,7 +4504,8 @@
                             scene.add(monster);
                             planeList.push(monster);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -4506,7 +4522,8 @@
                             scene.add(monster);
                             planeList.push(monster);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -4523,7 +4540,8 @@
                             scene.add(monster);
                             planeList.push(monster);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -4540,7 +4558,8 @@
                             scene.add(monster);
                             planeList.push(monster);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -4557,7 +4576,8 @@
                             scene.add(monster);
                             planeList.push(monster);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -4574,7 +4594,8 @@
                             scene.add(monster);
                             planeList.push(monster);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -4591,7 +4612,8 @@
                             scene.add(monster);
                             planeList.push(monster);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -4608,7 +4630,8 @@
                             scene.add(monster);
                             planeList.push(monster);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -4853,7 +4876,8 @@
                             scene.add(wall);
                             planeList.push(wall);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -4873,7 +4897,8 @@
                             scene.add(wall);
                             planeList.push(wall);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -4968,7 +4993,8 @@
                             scene.add(wall);
                             planeList.push(wall);
 
-                            if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                            if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                                 const roofObj = wallMap.get('roof_3');
                                 const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                                 roof.position.set(position.x, position.y + 100, position.z);
@@ -5050,7 +5076,8 @@
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
 
-                        if (map[y][x + 1] === 20 || map[y][x - 1] === 20 || map[y + 1][x] === 20 || map[y - 1][x] === 20) {
+                        if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20) 
+                                || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
                             const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
