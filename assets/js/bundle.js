@@ -3306,13 +3306,13 @@
                 ],
                 108: [
                     {
-                        question: 'Would you like to buy some chicken to eat? Only 6 gold.',
+                        question: 'Would you like to buy some ham to eat? Only 6 gold.',
                         yesCallback: () => {
                             if (player.getCoins() >= 6 && player.canAddItem() === true) {
                                 player.setCoins(player.getCoins() - 6);
-                                player.addItem(itemMap.get('Chicken'));
+                                player.addItem(itemMap.get('Ham'));
 
-                                showOkDialog('You buy some chicken.');
+                                showOkDialog('You buy some ham.');
                             } else if (player.getCoins() <= 5) {
                                 showOkDialog('Sorry. You don\'t have enough gold.');
                             } else if (player.canAddItem() === false) {
@@ -5999,7 +5999,7 @@
                 if (encounterHelper && encounterHelper.getHasEncounter() === true) {
                     soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'attack_melee');
                 }
-                running = combatHelper.attackMelee(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap);
+                running = combatHelper.attackMelee(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap, itemMap);
 
                 input.joykeys.melee = false;
             }
@@ -6007,7 +6007,7 @@
                 if (encounterHelper && encounterHelper.getHasEncounter() === true) {
                     soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'attack_mage');
                 }
-                running = combatHelper.attackMage(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap);
+                running = combatHelper.attackMage(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap, itemMap);
 
                 input.joykeys.mage = false;
             }
@@ -6015,7 +6015,7 @@
                 if (encounterHelper && encounterHelper.getHasEncounter() === true) {
                     soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'attack_range');
                 }
-                running = combatHelper.attackRange(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap);
+                running = combatHelper.attackRange(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap, itemMap);
 
                 input.joykeys.range = false;
             }
