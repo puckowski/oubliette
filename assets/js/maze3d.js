@@ -2917,7 +2917,8 @@ import { QuestHelper } from "./quest-helper.js";
             if (encounterHelper && encounterHelper.getHasEncounter() === true) {
                 soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'attack_melee');
             }
-            running = combatHelper.attackMelee(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap, itemMap);
+            running = combatHelper.attackMelee(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, 
+                audioLoader, soundMap, itemMap, showOkDialog);
 
             input.joykeys.melee = false;
         }
@@ -2925,7 +2926,8 @@ import { QuestHelper } from "./quest-helper.js";
             if (encounterHelper && encounterHelper.getHasEncounter() === true) {
                 soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'attack_mage');
             }
-            running = combatHelper.attackMage(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap, itemMap);
+            running = combatHelper.attackMage(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, 
+                soundHelper, audioListener, audioLoader, soundMap, itemMap, showOkDialog);
 
             input.joykeys.mage = false;
         }
@@ -2933,7 +2935,8 @@ import { QuestHelper } from "./quest-helper.js";
             if (encounterHelper && encounterHelper.getHasEncounter() === true) {
                 soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'attack_range');
             }
-            running = combatHelper.attackRange(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap, itemMap);
+            running = combatHelper.attackRange(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, 
+                soundHelper, audioListener, audioLoader, soundMap, itemMap, showOkDialog);
 
             input.joykeys.range = false;
         }
@@ -3026,6 +3029,42 @@ import { QuestHelper } from "./quest-helper.js";
                             Math.floor(Math.random() * rainMasterObj.rangeZ) - rainMasterObj.midZ,
                         );
                     rainMasterObj.flash.power = 25 + Math.random() * 100;
+
+                    do {
+                        const platformWidthHalf = (map[0].length * 100) / 2;
+                        const platformHeightHalf = (map.length * 100) / 2;
+
+                        let x = Math.round((rainMasterObj.flash.position.x + platformWidthHalf) / 100);
+                        let y = Math.round((rainMasterObj.flash.position.z + platformHeightHalf) / 100);
+
+                        if (map[Math.abs(y)][Math.abs(x)] !== 20) {
+                            let match = false;
+
+                            for (let roofStartPosObj of roofStartPosList) {
+                                if (rainMasterObj.flash.position.x >= roofStartPosObj.x && rainMasterObj.flash.position.x <= roofStartPosObj.x + 100
+                                    && rainMasterObj.flash.position.z >= roofStartPosObj.z && rainMasterObj.flash.position.z <= roofStartPosObj.z + 100) {
+                                    match = true;
+                                    break;
+                                }
+                            }
+
+                            if (!match) {
+                                break;
+                            } else {
+                                rainMasterObj.flash.position.set(
+                                    Math.floor(Math.random() * rainMasterObj.rangeX) - rainMasterObj.midX,
+                                    Math.random() * (100 - 0) + 0,
+                                    Math.floor(Math.random() * rainMasterObj.rangeZ) - rainMasterObj.midZ,
+                                );
+                            }
+                        } else {
+                            rainMasterObj.flash.position.set(
+                                Math.floor(Math.random() * rainMasterObj.rangeX) - rainMasterObj.midX,
+                                Math.random() * (100 - 0) + 0,
+                                Math.floor(Math.random() * rainMasterObj.rangeZ) - rainMasterObj.midZ,
+                            );
+                        }
+                    } while(true);
                 }
             }
             else if (attribObj.fairy === true) {

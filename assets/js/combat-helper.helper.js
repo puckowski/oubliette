@@ -8,7 +8,7 @@ export class CombatHelper {
         return this.kingDragonDefeated;
     }
 
-    showLoot(encounterHelper, lootInventory, dialogHelper, player, soundHelper, audioListener, audioLoader, soundMap) {
+    showLoot(encounterHelper, lootInventory, dialogHelper, player, soundHelper, audioListener, audioLoader, soundMap, okDialogFunc) {
         const lootEle = document.getElementById('lootContainer');
         const lootItemsEle = document.getElementById('loot');
 
@@ -73,7 +73,7 @@ export class CombatHelper {
                                 }
                             }
                         } else {
-
+                            okDialogFunc.call(this, 'Your inventory is full.');
                         }
                     } else {
                         dialogHelper.setCurrentText(item.getDescriptionLong());
@@ -120,37 +120,37 @@ export class CombatHelper {
         }
     }
 
-    attackMelee(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap, itemMap) {
+    attackMelee(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap, itemMap, okDialogFunc) {
         if (encounterHelper && encounterHelper.getHasEncounter() === true) {
             const playerAttack = player.getMeleeAttackDamage();
             return this.attack(encounterHelper, player, map, scene, miniMap, playerAttack, lootInventory, dialogHelper,
-                soundHelper, audioListener, audioLoader, soundMap, itemMap);
+                soundHelper, audioListener, audioLoader, soundMap, itemMap, okDialogFunc);
         }
 
         return true;
     }
 
-    attackMage(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap, itemMap) {
+    attackMage(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap, itemMap, okDialogFunc) {
         if (encounterHelper && encounterHelper.getHasEncounter() === true) {
             const playerAttack = player.getMageAttackDamage();
             return this.attack(encounterHelper, player, map, scene, miniMap, playerAttack, lootInventory, dialogHelper,
-                soundHelper, audioListener, audioLoader, soundMap, itemMap);
+                soundHelper, audioListener, audioLoader, soundMap, itemMap, okDialogFunc);
         }
 
         return true;
     }
 
-    attackRange(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap, itemMap) {
+    attackRange(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap, itemMap, okDialogFunc) {
         if (encounterHelper && encounterHelper.getHasEncounter() === true) {
             const playerAttack = player.getRangeAttackDamage();
             return this.attack(encounterHelper, player, map, scene, miniMap, playerAttack, lootInventory, dialogHelper,
-                soundHelper, audioListener, audioLoader, soundMap, itemMap);
+                soundHelper, audioListener, audioLoader, soundMap, itemMap, okDialogFunc);
         }
 
         return true;
     }
 
-    attack(encounterHelper, player, map, scene, miniMap, playerAttack, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap, itemMap) {
+    attack(encounterHelper, player, map, scene, miniMap, playerAttack, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap, itemMap, okDialogFunc) {
         let running = true;
 
         const monster = encounterHelper.getMonster();
@@ -229,7 +229,7 @@ export class CombatHelper {
             encounterHelper.setHasEncounter(false);
             encounterHelper.removeHealthBar();
 
-            this.showLoot(encounterHelper, lootInventory, dialogHelper, player, soundHelper, audioListener, audioLoader, soundMap);
+            this.showLoot(encounterHelper, lootInventory, dialogHelper, player, soundHelper, audioListener, audioLoader, soundMap, okDialogFunc);
 
             miniMap.drawAt(encounterHelper.getX(), encounterHelper.getY(), 'rgb(230, 230, 230)');
         }

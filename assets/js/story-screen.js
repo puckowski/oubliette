@@ -88,7 +88,7 @@
             if (soundFile) {
                 audioLoader.load(soundFile, function (buffer) {
                     soundTemporal.setBuffer(buffer);
-                    soundTemporal.setLoop(true);
+                    soundTemporal.setLoop(false);
                     soundTemporal.setVolume(1);
                     soundTemporal.play();
                 });

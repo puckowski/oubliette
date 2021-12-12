@@ -2698,7 +2698,7 @@
             return this.kingDragonDefeated;
         }
 
-        showLoot(encounterHelper, lootInventory, dialogHelper, player, soundHelper, audioListener, audioLoader, soundMap) {
+        showLoot(encounterHelper, lootInventory, dialogHelper, player, soundHelper, audioListener, audioLoader, soundMap, okDialogFunc) {
             const lootEle = document.getElementById('lootContainer');
             const lootItemsEle = document.getElementById('loot');
 
@@ -2762,6 +2762,8 @@
                                         lootItemsEle.removeChild(lootItemsEle.lastElementChild);
                                     }
                                 }
+                            } else {
+                                okDialogFunc.call(this, 'Your inventory is full.');
                             }
                         } else {
                             dialogHelper.setCurrentText(item.getDescriptionLong());
@@ -2808,37 +2810,37 @@
             }
         }
 
-        attackMelee(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap, itemMap) {
+        attackMelee(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap, itemMap, okDialogFunc) {
             if (encounterHelper && encounterHelper.getHasEncounter() === true) {
                 const playerAttack = player.getMeleeAttackDamage();
                 return this.attack(encounterHelper, player, map, scene, miniMap, playerAttack, lootInventory, dialogHelper,
-                    soundHelper, audioListener, audioLoader, soundMap, itemMap);
+                    soundHelper, audioListener, audioLoader, soundMap, itemMap, okDialogFunc);
             }
 
             return true;
         }
 
-        attackMage(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap, itemMap) {
+        attackMage(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap, itemMap, okDialogFunc) {
             if (encounterHelper && encounterHelper.getHasEncounter() === true) {
                 const playerAttack = player.getMageAttackDamage();
                 return this.attack(encounterHelper, player, map, scene, miniMap, playerAttack, lootInventory, dialogHelper,
-                    soundHelper, audioListener, audioLoader, soundMap, itemMap);
+                    soundHelper, audioListener, audioLoader, soundMap, itemMap, okDialogFunc);
             }
 
             return true;
         }
 
-        attackRange(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap, itemMap) {
+        attackRange(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap, itemMap, okDialogFunc) {
             if (encounterHelper && encounterHelper.getHasEncounter() === true) {
                 const playerAttack = player.getRangeAttackDamage();
                 return this.attack(encounterHelper, player, map, scene, miniMap, playerAttack, lootInventory, dialogHelper,
-                    soundHelper, audioListener, audioLoader, soundMap, itemMap);
+                    soundHelper, audioListener, audioLoader, soundMap, itemMap, okDialogFunc);
             }
 
             return true;
         }
 
-        attack(encounterHelper, player, map, scene, miniMap, playerAttack, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap, itemMap) {
+        attack(encounterHelper, player, map, scene, miniMap, playerAttack, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap, itemMap, okDialogFunc) {
             let running = true;
 
             const monster = encounterHelper.getMonster();
@@ -2917,7 +2919,7 @@
                 encounterHelper.setHasEncounter(false);
                 encounterHelper.removeHealthBar();
 
-                this.showLoot(encounterHelper, lootInventory, dialogHelper, player, soundHelper, audioListener, audioLoader, soundMap);
+                this.showLoot(encounterHelper, lootInventory, dialogHelper, player, soundHelper, audioListener, audioLoader, soundMap, okDialogFunc);
 
                 miniMap.drawAt(encounterHelper.getX(), encounterHelper.getY(), 'rgb(230, 230, 230)');
             }
@@ -6058,7 +6060,8 @@
                 if (encounterHelper && encounterHelper.getHasEncounter() === true) {
                     soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'attack_melee');
                 }
-                running = combatHelper.attackMelee(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap, itemMap);
+                running = combatHelper.attackMelee(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, 
+                    audioLoader, soundMap, itemMap, showOkDialog);
 
                 input.joykeys.melee = false;
             }
@@ -6066,7 +6069,8 @@
                 if (encounterHelper && encounterHelper.getHasEncounter() === true) {
                     soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'attack_mage');
                 }
-                running = combatHelper.attackMage(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap, itemMap);
+                running = combatHelper.attackMage(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, 
+                    soundHelper, audioListener, audioLoader, soundMap, itemMap, showOkDialog);
 
                 input.joykeys.mage = false;
             }
@@ -6074,7 +6078,8 @@
                 if (encounterHelper && encounterHelper.getHasEncounter() === true) {
                     soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'attack_range');
                 }
-                running = combatHelper.attackRange(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, audioLoader, soundMap, itemMap);
+                running = combatHelper.attackRange(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, 
+                    soundHelper, audioListener, audioLoader, soundMap, itemMap, showOkDialog);
 
                 input.joykeys.range = false;
             }
@@ -6165,6 +6170,42 @@
                                 Math.floor(Math.random() * rainMasterObj.rangeZ) - rainMasterObj.midZ,
                             );
                         rainMasterObj.flash.power = 25 + Math.random() * 100;
+
+                        do {
+                            const platformWidthHalf = (map[0].length * 100) / 2;
+                            const platformHeightHalf = (map.length * 100) / 2;
+
+                            let x = Math.round((rainMasterObj.flash.position.x + platformWidthHalf) / 100);
+                            let y = Math.round((rainMasterObj.flash.position.z + platformHeightHalf) / 100);
+
+                            if (map[Math.abs(y)][Math.abs(x)] !== 20) {
+                                let match = false;
+
+                                for (let roofStartPosObj of roofStartPosList) {
+                                    if (rainMasterObj.flash.position.x >= roofStartPosObj.x && rainMasterObj.flash.position.x <= roofStartPosObj.x + 100
+                                        && rainMasterObj.flash.position.z >= roofStartPosObj.z && rainMasterObj.flash.position.z <= roofStartPosObj.z + 100) {
+                                        match = true;
+                                        break;
+                                    }
+                                }
+
+                                if (!match) {
+                                    break;
+                                } else {
+                                    rainMasterObj.flash.position.set(
+                                        Math.floor(Math.random() * rainMasterObj.rangeX) - rainMasterObj.midX,
+                                        Math.random() * (100 - 0) + 0,
+                                        Math.floor(Math.random() * rainMasterObj.rangeZ) - rainMasterObj.midZ,
+                                    );
+                                }
+                            } else {
+                                rainMasterObj.flash.position.set(
+                                    Math.floor(Math.random() * rainMasterObj.rangeX) - rainMasterObj.midX,
+                                    Math.random() * (100 - 0) + 0,
+                                    Math.floor(Math.random() * rainMasterObj.rangeZ) - rainMasterObj.midZ,
+                                );
+                            }
+                        } while(true);
                     }
                 }
                 else if (attribObj.fairy === true) {
