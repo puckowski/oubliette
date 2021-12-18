@@ -420,3 +420,8 @@ body {
     right: 17px;
     bottom: 25%;
 }
+
+.text-victory {
+	font-family: main-font;
+	color: #ffffff;
+}
