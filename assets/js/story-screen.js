@@ -66,6 +66,7 @@
         const story1 = document.getElementById('story1');
         const story2 = document.getElementById('story2');
         const story3 = document.getElementById('story3');
+        const loader = document.getElementById('spinner');
 
         story1.style.opacity = 1;
 
@@ -74,6 +75,7 @@
         }, 4500);
         setTimeout(() => {
             story3.style.opacity = 1;
+            loader.style.opacity = 0;
         }, 9000);
 
         launch();
