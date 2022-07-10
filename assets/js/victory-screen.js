@@ -1,3 +1,5 @@
+import { WebGLRenderer, Scene, PerspectiveCamera, AudioListener, Audio, AudioLoader} from './threemodule.js';
+
 (function () {
     var width = window.innerWidth * 1.0;
     var height = window.innerHeight * 1.0;
@@ -12,29 +14,29 @@
     ]);
 
     function initializeEngine() {
-        renderer = new THREE.WebGLRenderer({
+        renderer = new WebGLRenderer({
             antialias: true
         });
 
         renderer.setSize(width, height);
         renderer.clear();
 
-        scene = new THREE.Scene();
+        scene = new Scene();
 
-        camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
+        camera = new PerspectiveCamera(45, width / height, 1, 10000);
         camera.position.y = 50;
     }
 
     function initializeScene() {
         // create an AudioListener and add it to the camera
-        audioListener = new THREE.AudioListener();
+        audioListener = new AudioListener();
         camera.add(audioListener);
 
         // create a global audio source
-        soundGlobal = new THREE.Audio(audioListener);
+        soundGlobal = new Audio(audioListener);
 
         // load a sound and set it as the Audio object's buffer
-        audioLoader = new THREE.AudioLoader();
+        audioLoader = new AudioLoader();
     }
 
     function draw() {
@@ -71,7 +73,7 @@
 
     function resumeGame() {
         if (audioListener && audioLoader && backgroundSoundMap) {
-            let soundTemporal = new THREE.Audio(audioListener);
+            let soundTemporal = new Audio(audioListener);
             const soundFile = soundMap.get('door_open');
 
             if (soundFile) {

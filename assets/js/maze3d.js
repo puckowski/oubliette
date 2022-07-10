@@ -1,6 +1,5 @@
 import { Player } from "./player.model.js";
 import { DialogHelper } from "./dialog.helper.js";
-import { GameItem } from "./game-item.model.js";
 import { PlayerInventory } from "./inventory.model.js";
 import { Monster } from "./monster.model.js";
 import { EncounterHelper } from "./encounter.model.js";
@@ -11,8 +10,18 @@ import { ItemHelper } from "./item-helper.helper.js";
 import { CombatHelper } from "./combat-helper.helper.js";
 import { SaveHelper } from "./save-helper.help.js";
 import { QuestHelper } from "./quest-helper.js";
+import { GLTFLoader } from './3dloader.js';
+import {
+    Mesh, RepeatWrapping, HemisphereLight, WebGLRenderer, Scene, PerspectiveCamera,
+    Fog, AudioListener, Audio, AudioLoader, ShapeGeometry, Vector3, Clock, PointsMaterial, Points, PointLight, Geometry, Box3, ImageUtils, AnimationMixer, TextureLoader, sRGBEncoding, DirectionalLight, SpotLight, LinearEncoding
+} from './threemodule.js';
 
 (function () {
+    const clock = new Clock();
+    let animMixers = [];
+
+    const gltfLoader = new GLTFLoader();
+
     var width = window.innerWidth * 1.0;
     var height = window.innerHeight * 0.91;
 
@@ -116,9 +125,9 @@ import { QuestHelper } from "./quest-helper.js";
         [10, 'Welcome to the Tyhrann Tavern']
     ]);
     const lightingMap = new Map([
-        [1, new THREE.HemisphereLight(0xccdfed, 0x9fb3bd, 2)],
-        [5, new THREE.HemisphereLight(0xccdfed, 0x9fb3bd, 2)],
-        [9, new THREE.HemisphereLight(0xccdfed, 0x9fb3bd, 2)]
+        [1, new HemisphereLight(0xccdfed, 0x9fb3bd, 2)],
+        [5, new HemisphereLight(0xccdfed, 0x9fb3bd, 2)],
+        [9, new HemisphereLight(0xccdfed, 0x9fb3bd, 2)]
     ]);
     const floorMap = new Map();
     const skyMap = new Map();
@@ -893,17 +902,18 @@ import { QuestHelper } from "./quest-helper.js";
     };
 
     function initializeEngine() {
-        renderer = new THREE.WebGLRenderer({
+        renderer = new WebGLRenderer({
             antialias: true
         });
 
         renderer.setSize(width, height);
         renderer.clear();
+        renderer.outputEncoding = sRGBEncoding;
 
-        scene = new THREE.Scene();
+        scene = new Scene();
         // scene.fog = new THREE.Fog(0x777777, 25, 1000);
 
-        camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
+        camera = new PerspectiveCamera(45, width / height, 1, 10000);
         camera.position.y = 50;
 
         document.getElementById("canvasContainer").appendChild(renderer.domElement);
@@ -920,14 +930,14 @@ import { QuestHelper } from "./quest-helper.js";
     function initializeScene(saveData) {
         planeList = [];
 
-        scene.fog = new THREE.Fog(0x777777, 25, 1000);
+        scene.fog = new Fog(0x777777, 25, 1000);
 
-        audioListener = new THREE.AudioListener();
+        audioListener = new AudioListener();
         camera.add(audioListener);
 
-        soundGlobal = new THREE.Audio(audioListener);
+        soundGlobal = new Audio(audioListener);
 
-        audioLoader = new THREE.AudioLoader();
+        audioLoader = new AudioLoader();
 
         miniMap = new Oubliette.Gui.MiniMap(map[0].length, map.length, "statusbarContainer");
         miniMap.create();
@@ -943,6 +953,7 @@ import { QuestHelper } from "./quest-helper.js";
 
         skyMap.clear();
         textureHelper.buildSkyTextures(skyMap);
+
 
         const floorCode = levelFloorMap.get(level);
         let floorDataObj = null;
@@ -1060,6 +1071,7 @@ import { QuestHelper } from "./quest-helper.js";
 
         roofStartPosList = [];
 
+
         // map gen
         let maxX = 0, maxZ = 0, minX = 0, minZ = 0;
         for (var y = 0, ly = map.length; y < ly; y++) {
@@ -1102,7 +1114,7 @@ import { QuestHelper } from "./quest-helper.js";
                 switch (initialMapCode) {
                     case 100: {
                         const wallObj = wallMap.get('man_1');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
                         planeList.push(wall);
@@ -1110,7 +1122,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1120,7 +1132,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 101: {
                         const wallObj = wallMap.get('man_2');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
                         planeList.push(wall);
@@ -1128,7 +1140,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1138,7 +1150,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 102: {
                         const wallObj = wallMap.get('man_3');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
                         planeList.push(wall);
@@ -1146,7 +1158,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1156,7 +1168,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 104: {
                         const wallObj = wallMap.get('man_4');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
                         planeList.push(wall);
@@ -1164,7 +1176,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1174,7 +1186,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 105: {
                         const wallObj = wallMap.get('woman_1');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
                         planeList.push(wall);
@@ -1182,7 +1194,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1192,7 +1204,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 106: {
                         const wallObj = wallMap.get('woman_2');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
                         planeList.push(wall);
@@ -1200,7 +1212,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1210,7 +1222,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 107: {
                         const wallObj = wallMap.get('man_5');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
                         planeList.push(wall);
@@ -1218,7 +1230,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1228,7 +1240,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 108: {
                         const wallObj = wallMap.get('woman_3');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
                         planeList.push(wall);
@@ -1236,7 +1248,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1246,7 +1258,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 109: {
                         const wallObj = wallMap.get('woman_4');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
                         planeList.push(wall);
@@ -1254,7 +1266,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1264,7 +1276,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 110: {
                         const wallObj = wallMap.get('man_6');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
                         planeList.push(wall);
@@ -1272,7 +1284,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1282,7 +1294,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 111: {
                         const wallObj = wallMap.get('guard_1');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y + 5, position.z);
                         scene.add(wall);
                         planeList.push(wall);
@@ -1290,7 +1302,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1300,7 +1312,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case -1: {
                         const monsterObj = monsterMap.get('skeleton_1');
-                        const monster = new THREE.Mesh(monsterObj.geometry, monsterObj.material);
+                        const monster = new Mesh(monsterObj.geometry, monsterObj.material);
                         monster.position.set(position.x, position.y, position.z);
                         monster.name = String(y) + String(x) + '_monster';
                         scene.add(monster);
@@ -1309,7 +1321,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1319,7 +1331,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case -2: {
                         const monsterObj = monsterMap.get('orc_3');
-                        const monster = new THREE.Mesh(monsterObj.geometry, monsterObj.material);
+                        const monster = new Mesh(monsterObj.geometry, monsterObj.material);
                         monster.position.set(position.x, position.y, position.z);
                         monster.name = String(y) + String(x) + '_monster';
                         scene.add(monster);
@@ -1328,7 +1340,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1338,7 +1350,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case -3: {
                         const monsterObj = monsterMap.get('orc_6');
-                        const monster = new THREE.Mesh(monsterObj.geometry, monsterObj.material);
+                        const monster = new Mesh(monsterObj.geometry, monsterObj.material);
                         monster.position.set(position.x, position.y, position.z);
                         monster.name = String(y) + String(x) + '_monster';
                         scene.add(monster);
@@ -1347,7 +1359,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1357,7 +1369,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case -4: {
                         const monsterObj = monsterMap.get('dragon_4');
-                        const monster = new THREE.Mesh(monsterObj.geometry, monsterObj.material);
+                        const monster = new Mesh(monsterObj.geometry, monsterObj.material);
                         monster.position.set(position.x, position.y, position.z);
                         monster.name = String(y) + String(x) + '_monster';
                         scene.add(monster);
@@ -1366,7 +1378,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1376,7 +1388,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case -5: {
                         const monsterObj = monsterMap.get('dragon_3');
-                        const monster = new THREE.Mesh(monsterObj.geometry, monsterObj.material);
+                        const monster = new Mesh(monsterObj.geometry, monsterObj.material);
                         monster.position.set(position.x, position.y, position.z);
                         monster.name = String(y) + String(x) + '_monster';
                         scene.add(monster);
@@ -1385,7 +1397,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1395,7 +1407,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case -6: {
                         const monsterObj = monsterMap.get('wizard_2');
-                        const monster = new THREE.Mesh(monsterObj.geometry, monsterObj.material);
+                        const monster = new Mesh(monsterObj.geometry, monsterObj.material);
                         monster.position.set(position.x, position.y, position.z);
                         monster.name = String(y) + String(x) + '_monster';
                         scene.add(monster);
@@ -1404,7 +1416,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1414,7 +1426,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case -7: {
                         const monsterObj = monsterMap.get('reaper_2');
-                        const monster = new THREE.Mesh(monsterObj.geometry, monsterObj.material);
+                        const monster = new Mesh(monsterObj.geometry, monsterObj.material);
                         monster.position.set(position.x, position.y, position.z);
                         monster.name = String(y) + String(x) + '_monster';
                         scene.add(monster);
@@ -1423,7 +1435,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1433,7 +1445,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case -8: {
                         const monsterObj = monsterMap.get('ogre_1');
-                        const monster = new THREE.Mesh(monsterObj.geometry, monsterObj.material);
+                        const monster = new Mesh(monsterObj.geometry, monsterObj.material);
                         monster.position.set(position.x, position.y, position.z);
                         monster.name = String(y) + String(x) + '_monster';
                         scene.add(monster);
@@ -1442,7 +1454,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1452,7 +1464,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case -9: {
                         const monsterObj = monsterMap.get('dragon_3');
-                        const monster = new THREE.Mesh(monsterObj.geometry, monsterObj.material);
+                        const monster = new Mesh(monsterObj.geometry, monsterObj.material);
                         monster.position.set(position.x, position.y, position.z);
                         monster.name = String(y) + String(x) + '_monster';
                         scene.add(monster);
@@ -1461,7 +1473,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1471,7 +1483,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case -10: {
                         const monsterObj = monsterMap.get('demon_1');
-                        const monster = new THREE.Mesh(monsterObj.geometry, monsterObj.material);
+                        const monster = new Mesh(monsterObj.geometry, monsterObj.material);
                         monster.position.set(position.x, position.y, position.z);
                         monster.name = String(y) + String(x) + '_monster';
                         scene.add(monster);
@@ -1480,7 +1492,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1490,7 +1502,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case -11: {
                         const monsterObj = monsterMap.get('orc_4');
-                        const monster = new THREE.Mesh(monsterObj.geometry, monsterObj.material);
+                        const monster = new Mesh(monsterObj.geometry, monsterObj.material);
                         monster.position.set(position.x, position.y, position.z);
                         monster.name = String(y) + String(x) + '_monster';
                         scene.add(monster);
@@ -1499,7 +1511,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1509,7 +1521,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case -12: {
                         const monsterObj = monsterMap.get('orc_5');
-                        const monster = new THREE.Mesh(monsterObj.geometry, monsterObj.material);
+                        const monster = new Mesh(monsterObj.geometry, monsterObj.material);
                         monster.position.set(position.x, position.y, position.z);
                         monster.name = String(y) + String(x) + '_monster';
                         scene.add(monster);
@@ -1518,7 +1530,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1528,7 +1540,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 2: {
                         const wallObj = wallMap.get('stone_6');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
 
@@ -1536,12 +1548,12 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 3: {
                         const wallObj = wallMap.get('wood_1');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
 
                         const roofObj = wallMap.get('roof_2');
-                        const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                        const roof = new Mesh(roofObj.geometry, roofObj.material);
                         roof.position.set(position.x, position.y + 100, position.z);
                         roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                         scene.add(roof);
@@ -1550,12 +1562,12 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 4: {
                         const wallObj = wallMap.get('wood_2');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
 
                         const roofObj = wallMap.get('roof_2');
-                        const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                        const roof = new Mesh(roofObj.geometry, roofObj.material);
                         roof.position.set(position.x, position.y + 100, position.z);
                         roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                         scene.add(roof);
@@ -1564,12 +1576,12 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 5: {
                         const wallObj = wallMap.get('wood_3');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
 
                         const roofObj = wallMap.get('roof_2');
-                        const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                        const roof = new Mesh(roofObj.geometry, roofObj.material);
                         roof.position.set(position.x, position.y + 100, position.z);
                         roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                         scene.add(roof);
@@ -1578,7 +1590,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 6: {
                         const wallObj = wallMap.get('stone_5');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
 
@@ -1586,7 +1598,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 7: {
                         const wallObj = wallMap.get('stone_4');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
 
@@ -1594,7 +1606,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 8: {
                         const wallObj = wallMap.get('stone_3');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
 
@@ -1602,7 +1614,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 9: {
                         const wallObj = wallMap.get('stone_2');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
 
@@ -1610,7 +1622,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 10: {
                         const wallObj = wallMap.get('stone_1');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
 
@@ -1618,7 +1630,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 11: {
                         const wallObj = wallMap.get('forest_8');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
 
@@ -1626,7 +1638,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 12: {
                         const wallObj = wallMap.get('forest_7');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
 
@@ -1634,7 +1646,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 13: {
                         const wallObj = wallMap.get('forest_2');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
 
@@ -1642,7 +1654,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 14: {
                         const wallObj = wallMap.get('forest_1');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
 
@@ -1650,12 +1662,12 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 15: {
                         const wallObj = wallMap.get('door_1');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
 
                         const roofObj = wallMap.get('roof_2');
-                        const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                        const roof = new Mesh(roofObj.geometry, roofObj.material);
                         roof.position.set(position.x, position.y + 100, position.z);
                         roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                         scene.add(roof);
@@ -1664,12 +1676,12 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 16: {
                         const wallObj = wallMap.get('brick_1');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
 
                         const roofObj = wallMap.get('roof_2');
-                        const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                        const roof = new Mesh(roofObj.geometry, roofObj.material);
                         roof.position.set(position.x, position.y + 100, position.z);
                         roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                         scene.add(roof);
@@ -1678,12 +1690,12 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 17: {
                         const wallObj = wallMap.get('bookcase_1');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
 
                         const roofObj = wallMap.get('roof_2');
-                        const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                        const roof = new Mesh(roofObj.geometry, roofObj.material);
                         roof.position.set(position.x, position.y + 100, position.z);
                         roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                         scene.add(roof);
@@ -1692,7 +1704,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 18: {
                         const wallObj = wallMap.get('ruins_1');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y, position.z);
                         scene.add(wall);
 
@@ -1700,7 +1712,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 19: {
                         const wallObj = wallMap.get('table_1');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         wall.position.set(position.x, position.y - 25, position.z);
                         scene.add(wall);
                         planeList.push(wall);
@@ -1709,10 +1721,107 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 20: {
                         const roofObj = wallMap.get('roof_3');
-                        const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                        const roof = new Mesh(roofObj.geometry, roofObj.material);
                         roof.position.set(position.x, position.y + 100, position.z);
                         roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                         scene.add(roof);
+
+                        break;
+                    }
+                    case 21: {
+                        const stoX = position.x, stoY = position.y, stoZ = position.z;
+
+                        gltfLoader.load('assets/images/textures/tree_11.glb', function (gltf) {
+                            const root = gltf.scene;
+                            root.position.set(stoX, stoY - 50, stoZ);
+                            root.scale.set(50, 50, 50);
+                            scene.add(root);
+
+                        }, undefined, function (error) {
+
+                            console.error(error);
+
+                        });
+
+                        break;
+                    }
+                    case 22: {
+                        const stoX = position.x, stoY = position.y, stoZ = position.z;
+
+                        gltfLoader.load('assets/images/textures/tree_15.glb', function (gltf) {
+                            const root = gltf.scene;
+
+                            root.position.set(stoX, stoY - 50, stoZ);
+                            root.scale.set(10, 10, 10);
+
+                            scene.add(root);
+
+                            /*
+                            const color = 0xFFFFFF;
+                            const intensity = 5;
+                            const light = new DirectionalLight(color, intensity);
+                            light.position.set(stoX, stoY - 50, stoZ);
+                            scene.add(light);
+                            scene.add(light.target);*/
+
+                            const light = new PointLight(0xffffff, 1, 100);
+                            light.position.set(stoX, stoY - 50, stoZ + 50);
+                            scene.add(light);
+                        }, undefined, function (error) {
+
+                            console.error(error);
+
+                        });
+
+                        break;
+                    }
+                    case 23: {
+                        const stoX = position.x, stoY = position.y, stoZ = position.z;
+
+                        gltfLoader.load('assets/images/textures/tree_16.glb', function (gltf) {
+                            const root = gltf.scene;
+
+                            root.position.set(stoX, stoY - 50, stoZ);
+                            root.scale.set(50, 50, 50);
+
+                            scene.add(root);
+
+                            const light = new PointLight(0xffffff, 1, 100);
+                            light.position.set(stoX, stoY - 50, stoZ + 50);
+                            scene.add(light);
+                        }, undefined, function (error) {
+
+                            console.error(error);
+
+                        });
+
+                        break;
+                    }
+                    case 24: {
+                        const stoX = position.x, stoY = position.y, stoZ = position.z;
+
+                        gltfLoader.load('assets/images/textures/fire_1.glb', function (gltf) {
+                            const root = gltf.scene;
+
+                            root.position.set(stoX, stoY - 40, stoZ);
+                            root.scale.set(40, 40, 40);
+
+                            const mixer = new AnimationMixer(gltf.scene);
+                            const animActions = [];
+
+                            gltf.animations.forEach((clip) => {
+                                const actionNext = mixer.clipAction(clip);
+                                animActions.push(actionNext);
+                                actionNext.play();
+                            });
+                            animMixers.push({ mixer: mixer, anims: gltf.animations, actions: animActions });
+
+                            scene.add(root);
+                        }, undefined, function (error) {
+
+                            console.error(error);
+
+                        });
 
                         break;
                     }
@@ -1721,7 +1830,7 @@ import { QuestHelper } from "./quest-helper.js";
                 switch (secondaryMapCode) {
                     case 1: {
                         const wallObj = wallMap.get('bush_1');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         if (initialMapCode !== 1) {
                             wall.position.set(position.x, position.y - 20, position.z + 50);
                         } else {
@@ -1734,7 +1843,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 2: {
                         const wallObj = wallMap.get('bush_2');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         if (initialMapCode !== 1) {
                             wall.position.set(position.x, position.y - 20, position.z + 50);
                         } else {
@@ -1747,7 +1856,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 3: {
                         const wallObj = wallMap.get('bush_3');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         if (initialMapCode !== 1) {
                             wall.position.set(position.x, position.y - 20, position.z + 50);
                         } else {
@@ -1760,7 +1869,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 4: {
                         const wallObj = wallMap.get('sign_1');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         if (initialMapCode !== 1) {
                             wall.position.set(position.x, position.y - 28, position.z + 50);
                         } else {
@@ -1772,7 +1881,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1782,7 +1891,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 5: {
                         const wallObj = wallMap.get('sign_2');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         if (initialMapCode !== 1) {
                             wall.position.set(position.x, position.y - 28, position.z + 50);
                         } else {
@@ -1794,7 +1903,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1804,7 +1913,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 6: {
                         const wallObj = wallMap.get('tree_1');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         if (initialMapCode !== 1) {
                             wall.position.set(position.x, position.y + 50, position.z + 50);
                         } else {
@@ -1817,7 +1926,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 7: {
                         const wallObj = wallMap.get('tree_2');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         if (initialMapCode !== 1) {
                             wall.position.set(position.x, position.y + 50, position.z + 50);
                         } else {
@@ -1830,7 +1939,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 8: {
                         const wallObj = wallMap.get('tree_3');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         if (initialMapCode !== 1) {
                             wall.position.set(position.x, position.y + 40, position.z + 50);
                         } else {
@@ -1843,7 +1952,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 9: {
                         const wallObj = wallMap.get('tree_4');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         if (initialMapCode !== 1) {
                             wall.position.set(position.x, position.y + 30, position.z + 50);
                         } else {
@@ -1856,7 +1965,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 10: {
                         const wallObj = wallMap.get('tree_5');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         if (initialMapCode !== 1) {
                             wall.position.set(position.x, position.y + 50, position.z + 50);
                         } else {
@@ -1869,7 +1978,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 11: {
                         const wallObj = wallMap.get('torch_1');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         if (initialMapCode !== 1) {
                             if (Math.abs(tertiaryMapCode) < 100) {
                                 wall.position.set(position.x, position.y, position.z + tertiaryMapCode);
@@ -1891,7 +2000,7 @@ import { QuestHelper } from "./quest-helper.js";
                         if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                             || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                             const roofObj = wallMap.get('roof_3');
-                            const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                            const roof = new Mesh(roofObj.geometry, roofObj.material);
                             roof.position.set(position.x, position.y + 100, position.z);
                             roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                             scene.add(roof);
@@ -1901,7 +2010,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 12: {
                         const wallObj = wallMap.get('tree_6');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         if (initialMapCode !== 1) {
                             wall.position.set(position.x, position.y + 50, position.z + 50);
                         } else {
@@ -1914,7 +2023,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 13: {
                         const wallObj = wallMap.get('tree_7');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         if (initialMapCode !== 1) {
                             wall.position.set(position.x, position.y + 50, position.z + 50);
                         } else {
@@ -1927,7 +2036,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 14: {
                         const wallObj = wallMap.get('tree_8');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         if (initialMapCode !== 1) {
                             wall.position.set(position.x, position.y + 50, position.z + 50);
                         } else {
@@ -1940,7 +2049,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 15: {
                         const wallObj = wallMap.get('tree_9');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         if (initialMapCode !== 1) {
                             wall.position.set(position.x, position.y + 50, position.z + 50);
                         } else {
@@ -1953,7 +2062,7 @@ import { QuestHelper } from "./quest-helper.js";
                     }
                     case 16: {
                         const wallObj = wallMap.get('tree_10');
-                        const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                        const wall = new Mesh(wallObj.geometry, wallObj.material);
                         if (initialMapCode !== 1) {
                             wall.position.set(position.x, position.y + 50, position.z + 50);
                         } else {
@@ -1968,14 +2077,14 @@ import { QuestHelper } from "./quest-helper.js";
 
                 if (typeof map[y][x] === 'string' && map[y][x].startsWith('A_') === true) {
                     const wallObj = wallMap.get('teleport_1');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
                     if ((map[y].length > x + 1 && map[y][x + 1] === 20) || (x - 1 >= 0 && map[y][x - 1] === 20)
                         || (map.length > y + 1 && map[y + 1][x] === 20) || (y - 1 >= 0 && map[y - 1][x] === 20)) {
                         const roofObj = wallMap.get('roof_3');
-                        const roof = new THREE.Mesh(roofObj.geometry, roofObj.material);
+                        const roof = new Mesh(roofObj.geometry, roofObj.material);
                         roof.position.set(position.x, position.y + 100, position.z);
                         roofStartPosList.push({ x: position.x, y: position.y, z: position.z, mapx: x, mapy: y });
                         scene.add(roof);
@@ -2011,7 +2120,7 @@ import { QuestHelper } from "./quest-helper.js";
             switch (skyCode) {
                 case 1: {
                     const wallObj = wallMap.get('roof_1');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2019,7 +2128,7 @@ import { QuestHelper } from "./quest-helper.js";
                 }
                 case 2: {
                     const wallObj = wallMap.get('sky_1');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2027,7 +2136,7 @@ import { QuestHelper } from "./quest-helper.js";
                 }
                 case 3: {
                     const wallObj = wallMap.get('sky_2');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2035,7 +2144,7 @@ import { QuestHelper } from "./quest-helper.js";
                 }
                 case 4: {
                     const wallObj = wallMap.get('sky_3');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2043,7 +2152,7 @@ import { QuestHelper } from "./quest-helper.js";
                 }
                 case 5: {
                     const wallObj = wallMap.get('sky_4');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2051,7 +2160,7 @@ import { QuestHelper } from "./quest-helper.js";
                 }
                 case 6: {
                     const wallObj = wallMap.get('sky_5');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2059,7 +2168,7 @@ import { QuestHelper } from "./quest-helper.js";
                 }
                 default: {
                     const wallObj = wallMap.get('roof_1');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2067,6 +2176,8 @@ import { QuestHelper } from "./quest-helper.js";
                 }
             }
         }
+
+
 
         y = map.length - 1;
         for (var x = 0, lx = map[x].length; x < lx; x++) {
@@ -2077,7 +2188,7 @@ import { QuestHelper } from "./quest-helper.js";
             switch (skyCode) {
                 case 1: {
                     const wallObj = wallMap.get('roof_1');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2085,7 +2196,7 @@ import { QuestHelper } from "./quest-helper.js";
                 }
                 case 2: {
                     const wallObj = wallMap.get('sky_1');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2093,7 +2204,7 @@ import { QuestHelper } from "./quest-helper.js";
                 }
                 case 3: {
                     const wallObj = wallMap.get('sky_2');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2101,7 +2212,7 @@ import { QuestHelper } from "./quest-helper.js";
                 }
                 case 4: {
                     const wallObj = wallMap.get('sky_3');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2109,7 +2220,7 @@ import { QuestHelper } from "./quest-helper.js";
                 }
                 case 5: {
                     const wallObj = wallMap.get('sky_4');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2117,7 +2228,7 @@ import { QuestHelper } from "./quest-helper.js";
                 }
                 case 6: {
                     const wallObj = wallMap.get('sky_5');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2125,7 +2236,7 @@ import { QuestHelper } from "./quest-helper.js";
                 }
                 default: {
                     const wallObj = wallMap.get('roof_1');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2143,7 +2254,7 @@ import { QuestHelper } from "./quest-helper.js";
             switch (skyCode) {
                 case 1: {
                     const wallObj = wallMap.get('roof_1');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2151,7 +2262,7 @@ import { QuestHelper } from "./quest-helper.js";
                 }
                 case 2: {
                     const wallObj = wallMap.get('sky_1');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2159,7 +2270,7 @@ import { QuestHelper } from "./quest-helper.js";
                 }
                 case 3: {
                     const wallObj = wallMap.get('sky_2');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2167,7 +2278,7 @@ import { QuestHelper } from "./quest-helper.js";
                 }
                 case 4: {
                     const wallObj = wallMap.get('sky_3');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2175,7 +2286,7 @@ import { QuestHelper } from "./quest-helper.js";
                 }
                 case 5: {
                     const wallObj = wallMap.get('sky_4');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2183,7 +2294,7 @@ import { QuestHelper } from "./quest-helper.js";
                 }
                 case 6: {
                     const wallObj = wallMap.get('sky_5');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2191,7 +2302,7 @@ import { QuestHelper } from "./quest-helper.js";
                 }
                 default: {
                     const wallObj = wallMap.get('roof_1');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2209,7 +2320,7 @@ import { QuestHelper } from "./quest-helper.js";
             switch (skyCode) {
                 case 1: {
                     const wallObj = wallMap.get('roof_1');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2217,7 +2328,7 @@ import { QuestHelper } from "./quest-helper.js";
                 }
                 case 2: {
                     const wallObj = wallMap.get('sky_1');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2225,7 +2336,7 @@ import { QuestHelper } from "./quest-helper.js";
                 }
                 case 3: {
                     const wallObj = wallMap.get('sky_2');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2233,7 +2344,7 @@ import { QuestHelper } from "./quest-helper.js";
                 }
                 case 4: {
                     const wallObj = wallMap.get('sky_3');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2241,7 +2352,7 @@ import { QuestHelper } from "./quest-helper.js";
                 }
                 case 5: {
                     const wallObj = wallMap.get('sky_4');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2249,7 +2360,7 @@ import { QuestHelper } from "./quest-helper.js";
                 }
                 case 6: {
                     const wallObj = wallMap.get('sky_5');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2257,7 +2368,7 @@ import { QuestHelper } from "./quest-helper.js";
                 }
                 default: {
                     const wallObj = wallMap.get('roof_1');
-                    const wall = new THREE.Mesh(wallObj.geometry, wallObj.material);
+                    const wall = new Mesh(wallObj.geometry, wallObj.material);
                     wall.position.set(position.x, position.y, position.z);
                     scene.add(wall);
 
@@ -2272,7 +2383,7 @@ import { QuestHelper } from "./quest-helper.js";
             directionalLight.position.set(1, 1, 0);
             scene.add(directionalLight);
         } else {
-            var directionalLight = new THREE.HemisphereLight(0x192F3F, 0x28343A, 2);
+            var directionalLight = new HemisphereLight(0x192F3F, 0x28343A, 2);
             directionalLight.position.set(1, 1, 0);
             scene.add(directionalLight);
         }
@@ -2292,9 +2403,9 @@ import { QuestHelper } from "./quest-helper.js";
                 rainMasterObj.rangeX = rangeX;
                 rainMasterObj.rangeZ = rangeZ;
 
-                rainMasterObj.rainGeo = new THREE.Geometry();
+                rainMasterObj.rainGeo = new Geometry();
                 for (let i = 0; i < rainMasterObj.rainCount; i++) {
-                    let rainDrop = new THREE.Vector3(
+                    let rainDrop = new Vector3(
                         Math.floor(Math.random() * rangeX) - midX,
                         Math.random() * (100 - 0) + 0,
                         Math.floor(Math.random() * rangeZ) - midZ,
@@ -2324,16 +2435,16 @@ import { QuestHelper } from "./quest-helper.js";
                         }
                     }
                 }
-                rainMasterObj.rainMaterial = new THREE.PointsMaterial({
+                rainMasterObj.rainMaterial = new PointsMaterial({
                     color: 0xaaaaaa,
                     size: 0.8,
                     transparent: true
                 });
-                rainMasterObj.rain = new THREE.Points(rainMasterObj.rainGeo, rainMasterObj.rainMaterial);
+                rainMasterObj.rain = new Points(rainMasterObj.rainGeo, rainMasterObj.rainMaterial);
                 rainMasterObj.rain.position.set(lastPosition.x, lastPosition.y, lastPosition.z);
                 scene.add(rainMasterObj.rain);
 
-                rainMasterObj.flash = new THREE.PointLight(0x062d89, 30, 500, 1.7);
+                rainMasterObj.flash = new PointLight(0x062d89, 30, 500, 1.7);
                 rainMasterObj.flash.position.set(lastPosition.x, lastPosition.y, lastPosition.z);
                 scene.add(rainMasterObj.flash);
             }
@@ -2350,9 +2461,9 @@ import { QuestHelper } from "./quest-helper.js";
                 let rangeX = (Math.abs(maxX) + Math.abs(minX));
                 let rangeZ = (Math.abs(maxZ) + Math.abs(minZ));
 
-                fairyMasterObj.fairyGeo = new THREE.Geometry();
+                fairyMasterObj.fairyGeo = new Geometry();
                 for (let i = 0; i < fairyMasterObj.fairyCount; i++) {
-                    let fairySpot = new THREE.Vector3(
+                    let fairySpot = new Vector3(
                         Math.floor(Math.random() * rangeX) - midX,
                         Math.random() * (100 - 0) + 0,
                         Math.floor(Math.random() * rangeZ) - midZ,
@@ -2361,12 +2472,12 @@ import { QuestHelper } from "./quest-helper.js";
                     fairySpot.velocity = 0;
                     fairyMasterObj.fairyGeo.vertices.push(fairySpot);
                 }
-                fairyMasterObj.fairyMaterial = new THREE.PointsMaterial({
+                fairyMasterObj.fairyMaterial = new PointsMaterial({
                     color: 0xffffff,
                     size: 0.4,
                     transparent: true
                 });
-                fairyMasterObj.fairyScreen = new THREE.Points(fairyMasterObj.fairyGeo, fairyMasterObj.fairyMaterial);
+                fairyMasterObj.fairyScreen = new Points(fairyMasterObj.fairyGeo, fairyMasterObj.fairyMaterial);
                 fairyMasterObj.fairyScreen.position.set(lastPosition.x, lastPosition.y, lastPosition.z);
                 scene.add(fairyMasterObj.fairyScreen);
             }
@@ -2852,7 +2963,7 @@ import { QuestHelper } from "./quest-helper.js";
             if (rebuildCamera) {
                 const posClone = camera.position.clone();
                 const rotation = camera.rotation.y;
-                camera = new THREE.PerspectiveCamera(45, newWidth / canvasHeight, 1, 10000);
+                camera = new PerspectiveCamera(45, newWidth / canvasHeight, 1, 10000);
                 camera.position.set(posClone.x, posClone.y, posClone.z);
                 camera.add(audioListener);
                 camera.rotation.y = rotation;
@@ -2917,7 +3028,7 @@ import { QuestHelper } from "./quest-helper.js";
             if (encounterHelper && encounterHelper.getHasEncounter() === true) {
                 soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'attack_melee');
             }
-            running = combatHelper.attackMelee(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener, 
+            running = combatHelper.attackMelee(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, soundHelper, audioListener,
                 audioLoader, soundMap, itemMap, showOkDialog);
 
             input.joykeys.melee = false;
@@ -2926,7 +3037,7 @@ import { QuestHelper } from "./quest-helper.js";
             if (encounterHelper && encounterHelper.getHasEncounter() === true) {
                 soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'attack_mage');
             }
-            running = combatHelper.attackMage(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, 
+            running = combatHelper.attackMage(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper,
                 soundHelper, audioListener, audioLoader, soundMap, itemMap, showOkDialog);
 
             input.joykeys.mage = false;
@@ -2935,7 +3046,7 @@ import { QuestHelper } from "./quest-helper.js";
             if (encounterHelper && encounterHelper.getHasEncounter() === true) {
                 soundHelper.playSoundTemporal(audioListener, audioLoader, soundMap, 'attack_range');
             }
-            running = combatHelper.attackRange(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper, 
+            running = combatHelper.attackRange(encounterHelper, player, map, scene, miniMap, lootInventory, dialogHelper,
                 soundHelper, audioListener, audioLoader, soundMap, itemMap, showOkDialog);
 
             input.joykeys.range = false;
@@ -3064,7 +3175,7 @@ import { QuestHelper } from "./quest-helper.js";
                                 Math.floor(Math.random() * rainMasterObj.rangeZ) - rainMasterObj.midZ,
                             );
                         }
-                    } while(true);
+                    } while (true);
                 }
             }
             else if (attribObj.fairy === true) {
@@ -3127,7 +3238,7 @@ import { QuestHelper } from "./quest-helper.js";
 
                 monster.setItems(items);
 
-                let soundTemporal = new THREE.Audio(audioListener);
+                let soundTemporal = new Audio(audioListener);
                 const soundFile = soundMap.get('rat_encounter');
 
                 if (soundFile) {
@@ -3190,7 +3301,7 @@ import { QuestHelper } from "./quest-helper.js";
 
                 monster.setItems(items);
 
-                let soundTemporal = new THREE.Audio(audioListener);
+                let soundTemporal = new Audio(audioListener);
                 const soundFile = soundMap.get('orc_encounter');
 
                 if (soundFile) {
@@ -3250,7 +3361,7 @@ import { QuestHelper } from "./quest-helper.js";
 
                 monster.setItems(items);
 
-                let soundTemporal = new THREE.Audio(audioListener);
+                let soundTemporal = new Audio(audioListener);
                 const soundFile = soundMap.get('orc_encounter');
 
                 if (soundFile) {
@@ -3319,7 +3430,7 @@ import { QuestHelper } from "./quest-helper.js";
 
                 monster.setItems(items);
 
-                let soundTemporal = new THREE.Audio(audioListener);
+                let soundTemporal = new Audio(audioListener);
                 const soundFile = soundMap.get('dragon_small_encounter');
 
                 if (soundFile) {
@@ -3366,7 +3477,7 @@ import { QuestHelper } from "./quest-helper.js";
 
                 monster.setItems(items);
 
-                let soundTemporal = new THREE.Audio(audioListener);
+                let soundTemporal = new Audio(audioListener);
                 const soundFile = soundMap.get('dragon_encounter');
 
                 if (soundFile) {
@@ -3424,7 +3535,7 @@ import { QuestHelper } from "./quest-helper.js";
 
                 monster.setItems(items);
 
-                let soundTemporal = new THREE.Audio(audioListener);
+                let soundTemporal = new Audio(audioListener);
                 const soundFile = soundMap.get('wizard_encounter');
 
                 if (soundFile) {
@@ -3489,7 +3600,7 @@ import { QuestHelper } from "./quest-helper.js";
 
                 monster.setItems(items);
 
-                let soundTemporal = new THREE.Audio(audioListener);
+                let soundTemporal = new Audio(audioListener);
                 const soundFile = soundMap.get('reaper_encounter');
 
                 if (soundFile) {
@@ -3554,7 +3665,7 @@ import { QuestHelper } from "./quest-helper.js";
 
                 monster.setItems(items);
 
-                let soundTemporal = new THREE.Audio(audioListener);
+                let soundTemporal = new Audio(audioListener);
                 const soundFile = soundMap.get('orc_encounter');
 
                 if (soundFile) {
@@ -3627,7 +3738,7 @@ import { QuestHelper } from "./quest-helper.js";
 
                 monster.setItems(items);
 
-                let soundTemporal = new THREE.Audio(audioListener);
+                let soundTemporal = new Audio(audioListener);
                 const soundFile = soundMap.get('demon_encounter');
 
                 if (soundFile) {
@@ -3691,7 +3802,7 @@ import { QuestHelper } from "./quest-helper.js";
 
                 monster.setItems(items);
 
-                let soundTemporal = new THREE.Audio(audioListener);
+                let soundTemporal = new Audio(audioListener);
                 const soundFile = soundMap.get('orc_encounter');
 
                 if (soundFile) {
@@ -3755,7 +3866,7 @@ import { QuestHelper } from "./quest-helper.js";
 
                 monster.setItems(items);
 
-                let soundTemporal = new THREE.Audio(audioListener);
+                let soundTemporal = new Audio(audioListener);
                 const soundFile = soundMap.get('orc_encounter');
 
                 if (soundFile) {
@@ -4402,9 +4513,23 @@ import { QuestHelper } from "./quest-helper.js";
             // animatorList = [];
             goPreviousLevel();
         } else if (running) {
+            scene.traverse((object) => {
+                if (object.isMesh) {
+                    const material = object.material;
+                    if (material.map) material.map.encoding = sRGBEncoding;
+                    if (material.emissiveMap) material.emissiveMap.encoding = sRGBEncoding;
+                    if (material.sheenColorMap) material.sheenColorMap.encoding = sRGBEncoding;
+                    if (material.specularColorMap) material.specularColorMap.encoding = sRGBEncoding;
+                }
+            });
+
             if (hasNotice) removeLoadingNotice();
             update();
             draw();
+            const delta = clock.getDelta();
+            animMixers.forEach(mixerObj => {
+                mixerObj.mixer.update(delta);
+            })
             window.requestAnimationFrame(mainLoop, renderer.domElement);
 
             // can remove all other save instances
@@ -4424,7 +4549,8 @@ import { QuestHelper } from "./quest-helper.js";
             scene.remove(scene.children[i]);
         }
         renderer.clear();
-        scene = new THREE.Scene();
+        renderer.outputEncoding = sRGBEncoding;
+        scene = new Scene();
 
         level = levelHelper.getPrevious();
         loadLevel(level);
@@ -4446,7 +4572,8 @@ import { QuestHelper } from "./quest-helper.js";
                 scene.remove(scene.children[i]);
             }
             renderer.clear();
-            scene = new THREE.Scene();
+            renderer.outputEncoding = sRGBEncoding;
+            scene = new Scene();
             level = levelHelper.getNext();
 
             if (requestedNewLevel !== null) {
@@ -4460,6 +4587,12 @@ import { QuestHelper } from "./quest-helper.js";
 
     function loadLevel(level) {
         hasNotice = true;
+        animMixers.forEach(mixerObj => {
+            mixerObj.actions.forEach(action => {
+                action.stop();
+            });
+        });
+        animMixers = [];
         const notice = document.getElementById('loadingNotice');
         notice.style.display = '';
 
@@ -4471,7 +4604,7 @@ import { QuestHelper } from "./quest-helper.js";
                 launch();
 
                 if (firstStepInLevel === false) {
-                    let soundTemporal = new THREE.Audio(audioListener);
+                    let soundTemporal = new Audio(audioListener);
                     const soundFile = soundMap.get('metal-click');
 
                     if (soundFile) {
@@ -4491,8 +4624,8 @@ import { QuestHelper } from "./quest-helper.js";
     }
 
     function repeatTexture(texture, size) {
-        texture.wrapS = THREE.RepeatWrapping;
-        texture.wrapT = THREE.RepeatWrapping;
+        texture.wrapS = RepeatWrapping;
+        texture.wrapT = RepeatWrapping;
         texture.repeat.x = size;
         texture.repeat.y = size;
         return texture;

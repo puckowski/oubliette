@@ -1,3 +1,5 @@
+import { Audio } from './threemodule';
+
 export class SoundHelper {
     constructor() {
 
@@ -5,7 +7,7 @@ export class SoundHelper {
 
     playSoundTemporal(audioListener, audioLoader, soundMap, soundName) {
         if (audioListener && audioLoader && soundMap) {
-            let soundTemporal = new THREE.Audio(audioListener);
+            let soundTemporal = new Audio(audioListener);
             const soundFile = soundMap.get(soundName);
 
             if (soundFile) {
