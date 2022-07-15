@@ -13,10 +13,18 @@ import { QuestHelper } from "./quest-helper.js";
 import { GLTFLoader } from './3dloader.js';
 import {
     Mesh, RepeatWrapping, HemisphereLight, WebGLRenderer, Scene, PerspectiveCamera,
-    Fog, AudioListener, Audio, AudioLoader, ShapeGeometry, Vector3, Clock, PointsMaterial, Points, PointLight, Geometry, Box3, ImageUtils, AnimationMixer, TextureLoader, sRGBEncoding, DirectionalLight, SpotLight, LinearEncoding
+    Fog, AudioListener, Audio, AudioLoader, ShapeGeometry, Vector3, Clock, PointsMaterial, Points, PointLight, Box3, ImageUtils, AnimationMixer, TextureLoader, sRGBEncoding, DirectionalLight, SpotLight, LinearEncoding, MathUtils, LineSegments, LineBasicMaterial, Float32BufferAttribute, BufferGeometry, WebGLRenderTarget, BufferAttribute
 } from './threemodule.js';
+import { RenderPass } from "./renderpass.js";
+import { EffectComposer } from "./effectcomposer.js";
 
 (function () {
+    let globalUniforms = {
+        time: { value: 0 },
+        globalBloom: { value: 0 },
+        noise: { value: null }
+    };
+
     const clock = new Clock();
     let animMixers = [];
 
@@ -874,7 +882,7 @@ import {
 
     let rainMasterObj = {
         rainGeo: null,
-        rainCount: 15000,
+        rainCount: 45000,
         rainMaterial: null,
         rain: null,
         flash: null,
@@ -2403,7 +2411,10 @@ import {
                 rainMasterObj.rangeX = rangeX;
                 rainMasterObj.rangeZ = rangeZ;
 
-                rainMasterObj.rainGeo = new Geometry();
+                let gPos = new Float32Array(rainMasterObj.rainCount * 3);
+                let gIndex = 0;
+
+                // rainMasterObj.rainGeo = new Geometry();
                 for (let i = 0; i < rainMasterObj.rainCount; i++) {
                     let rainDrop = new Vector3(
                         Math.floor(Math.random() * rangeX) - midX,
@@ -2431,10 +2442,39 @@ import {
                         if (!match) {
                             rainDrop.velocity = {};
                             rainDrop.velocity = 0;
-                            rainMasterObj.rainGeo.vertices.push(rainDrop);
+                            // rainMasterObj.rainGeo.vertices.push(rainDrop);
+
+                            gPos[gIndex] = rainDrop.x;
+                            gPos[gIndex + 1] = rainDrop.y;
+                            gPos[gIndex + 2] = rainDrop.z;
+                            gIndex += 3;
                         }
                     }
                 }
+
+                // Geometry
+                const geometrys = [new BufferGeometry()];
+
+                geometrys[0].setAttribute(
+                    "position",
+                    new BufferAttribute(getRandomParticlePos(rainMasterObj.rainCount, rangeX, midX, rangeZ, midZ, map, roofStartPosList), 3)
+                );
+
+                // material
+                const materials = [
+                    new PointsMaterial({
+                        size: 1.00,
+                        transparent: true,
+                        color: "#9099a1"
+                    }),
+                ];
+
+                const rainT1 = new Points(geometrys[0], materials[0]);
+                scene.add(rainT1);
+
+                rainMasterObj.rainGeo = geometrys[0];
+
+                /*
                 rainMasterObj.rainMaterial = new PointsMaterial({
                     color: 0xaaaaaa,
                     size: 0.8,
@@ -2443,6 +2483,7 @@ import {
                 rainMasterObj.rain = new Points(rainMasterObj.rainGeo, rainMasterObj.rainMaterial);
                 rainMasterObj.rain.position.set(lastPosition.x, lastPosition.y, lastPosition.z);
                 scene.add(rainMasterObj.rain);
+                */
 
                 rainMasterObj.flash = new PointLight(0x062d89, 30, 500, 1.7);
                 rainMasterObj.flash.position.set(lastPosition.x, lastPosition.y, lastPosition.z);
@@ -2461,28 +2502,83 @@ import {
                 let rangeX = (Math.abs(maxX) + Math.abs(minX));
                 let rangeZ = (Math.abs(maxZ) + Math.abs(minZ));
 
-                fairyMasterObj.fairyGeo = new Geometry();
-                for (let i = 0; i < fairyMasterObj.fairyCount; i++) {
-                    let fairySpot = new Vector3(
-                        Math.floor(Math.random() * rangeX) - midX,
-                        Math.random() * (100 - 0) + 0,
-                        Math.floor(Math.random() * rangeZ) - midZ,
-                    );
-                    fairySpot.velocity = {};
-                    fairySpot.velocity = 0;
-                    fairyMasterObj.fairyGeo.vertices.push(fairySpot);
-                }
-                fairyMasterObj.fairyMaterial = new PointsMaterial({
-                    color: 0xffffff,
-                    size: 0.4,
-                    transparent: true
-                });
-                fairyMasterObj.fairyScreen = new Points(fairyMasterObj.fairyGeo, fairyMasterObj.fairyMaterial);
-                fairyMasterObj.fairyScreen.position.set(lastPosition.x, lastPosition.y, lastPosition.z);
-                scene.add(fairyMasterObj.fairyScreen);
+                // Geometry
+                const geometrys = [new BufferGeometry()];
+
+                geometrys[0].setAttribute(
+                    "position",
+                    new BufferAttribute(getRandomParticlePos(fairyMasterObj.fairyCount, rangeX, midX, rangeZ, midZ, map, roofStartPosList), 3)
+                );
+
+                // material
+                const materials = [
+                    new PointsMaterial({
+                        size: 1.50,
+                        transparent: true,
+                        color: "#fffded"
+                    }),
+                ];
+
+                const fairyT1 = new Points(geometrys[0], materials[0]);
+                scene.add(fairyT1);
+
+                fairyMasterObj.fairyScreen = fairyT1;
+                fairyMasterObj.fairyGeo = geometrys[0];
             }
         }
     }
+
+    function getRandomParticlePos(particleCount, rangeX, midX, rangeZ, midZ, map, roofStartPosList) {
+        let arr = new Float32Array(particleCount * 3);
+        let count = particleCount * 3;
+        const platformWidthHalf = (map[0].length * 100) / 2;
+        const platformHeightHalf = (map.length * 100) / 2;
+        for (let i = 0; i < particleCount; i++) {
+            arr[i] = Math.floor(Math.random() * rangeX) - midX;
+            arr[i + 1] = Math.random() * (100 - 0) + 0;
+            arr[i + 2] = Math.floor(Math.random() * rangeZ) - midZ;
+            i += 2;
+        }
+        for (let i = 0; i < arr.length; ++i) {
+            let x = Math.round((arr[i] + platformWidthHalf) / 100);
+            let y = Math.round((arr[i + 2] + platformHeightHalf) / 100);
+
+            if (map[Math.abs(y)][Math.abs(x)] !== 20) {
+                let match = false;
+
+                for (let roofStartPosObj of roofStartPosList) {
+                    if (arr[i] >= roofStartPosObj.x && arr[i] <= roofStartPosObj.x + 100
+                        && arr[i + 2] >= roofStartPosObj.z && arr[i + 2] <= roofStartPosObj.z + 100) {
+                        match = true;
+                        break;
+                    }
+                }
+
+                if (match) {
+                    arr[i] = -999;
+                    arr[i + 1] = -999;
+                    arr[i + 2] = -999;
+                    count -= 3;
+                }
+            } else {
+                arr[i] = -999;
+                arr[i + 1] = -999;
+                arr[i + 2] = -999;
+                count -= 3;
+            }
+
+            i += 2;
+        }
+        let arr2 = new Float32Array(count);
+        let pop = 0;
+        for (let i = 0; i < arr.length; ++i) {
+            if (arr[i] !== -999) {
+                arr2[pop] = arr[i];
+                pop++;
+            }
+        }
+        return arr2;
+    };
 
     function showStats() {
         const statsEle = document.getElementById('statsContainer');
@@ -3114,6 +3210,7 @@ import {
             var platformHeight = (map.length * 100) / 2;
 
             if (attribObj.rain === true) {
+                /*
                 rainMasterObj.rainGeo.vertices.forEach(p => {
                     let x = Math.round((p.x + platformWidth) / 100);
                     let y = Math.round((p.z + platformHeight) / 100);
@@ -3130,7 +3227,24 @@ import {
                     }
                 });
                 rainMasterObj.rainGeo.verticesNeedUpdate = true;
+                */
                 // rainMasterObj.rain.rotation.y += 0.002;
+                const positions = rainMasterObj.rainGeo.attributes.position.array;
+
+                let index = 0;
+
+                for (let i = 0, l = positions.length; i < l; i++) {
+                    positions[index] = positions[index];
+                    positions[index + 1] = positions[index + 1] - 1.85;
+                    positions[index + 2] = positions[index + 2];
+
+                    if (positions[index + 1] < 0) {
+                        positions[index + 1] = 100;
+                    }
+
+                    index += 3;
+                }
+                rainMasterObj.rainGeo.attributes.position.needsUpdate = true;
 
                 if (Math.random() > 0.93 || rainMasterObj.flash.power > 50) {
                     if (rainMasterObj.flash.power < 50)
@@ -4529,7 +4643,7 @@ import {
             const delta = clock.getDelta();
             animMixers.forEach(mixerObj => {
                 mixerObj.mixer.update(delta);
-            })
+            });
             window.requestAnimationFrame(mainLoop, renderer.domElement);
 
             // can remove all other save instances
