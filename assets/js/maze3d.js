@@ -15,8 +15,7 @@ import {
     Mesh, RepeatWrapping, HemisphereLight, WebGLRenderer, Scene, PerspectiveCamera,
     Fog, AudioListener, Audio, AudioLoader, ShapeGeometry, Vector3, Clock, PointsMaterial, Points, PointLight, Box3, ImageUtils, AnimationMixer, TextureLoader, sRGBEncoding, DirectionalLight, SpotLight, LinearEncoding, MathUtils, LineSegments, LineBasicMaterial, Float32BufferAttribute, BufferGeometry, WebGLRenderTarget, BufferAttribute
 } from './threemodule.js';
-import { RenderPass } from "./renderpass.js";
-import { EffectComposer } from "./effectcomposer.js";
+import { DRACOLoader } from './dracoloader.js';
 
 (function () {
     let globalUniforms = {
@@ -29,6 +28,10 @@ import { EffectComposer } from "./effectcomposer.js";
     let animMixers = [];
 
     const gltfLoader = new GLTFLoader();
+
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath('/assets/js/draco/');
+    gltfLoader.setDRACOLoader(dracoLoader);
 
     var width = window.innerWidth * 1.0;
     var height = window.innerHeight * 0.91;

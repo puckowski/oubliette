@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "fs-extra": "^9.1.0",
+    "gltf-pipeline": "^3.0.5",
     "rxjs": "^5.5.10",
     "rxjs-compat": "^6.6.3",
     "three-plain-animator": "^1.0.6"
