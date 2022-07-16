@@ -30,7 +30,7 @@ import { DRACOLoader } from './dracoloader.js';
     const gltfLoader = new GLTFLoader();
 
     const dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath('/assets/js/draco/');
+    dracoLoader.setDecoderPath('oubliette.3d/assets/js/draco/');
     gltfLoader.setDRACOLoader(dracoLoader);
 
     var width = window.innerWidth * 1.0;
